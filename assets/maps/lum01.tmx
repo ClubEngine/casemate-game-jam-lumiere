@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="70">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="71">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
-  <image source="../../../louveteau/assets/Textures/tiles.png" trans="ff00ff" width="1024" height="2016"/>
+  <image source="../textures/tiles.png" trans="ff00ff" width="1024" height="2016"/>
  </tileset>
  <layer name="Ground" width="100" height="100">
   <data encoding="base64" compression="zlib">
@@ -45,6 +45,7 @@
  </layer>
  <objectgroup name="objs">
   <object id="67" name="exit" x="515" y="278" width="35" height="33"/>
-  <object id="68" name="spawn" x="55" y="108" width="39" height="40"/>
+  <object id="68" name="lumBlue" x="55" y="108" width="39" height="40"/>
+  <object id="70" name="lumRed" x="103.5" y="107" width="39" height="40"/>
  </objectgroup>
 </map>

@@ -54,7 +54,7 @@ public class GraphicEngine {
         if (mTextures.containsKey(textureName)) {
             return mTextures.get(textureName);
         }
-        Path path = FileSystems.getDefault().getPath(".", "assets", "Textures", textureName);
+        Path path = FileSystems.getDefault().getPath(".", "assets", "textures", textureName);
         Texture tex = new Texture();
         try {
             tex.loadFromFile(path);
@@ -69,7 +69,7 @@ public class GraphicEngine {
         if (mTextures.containsKey(fontName)) {
             return mFonts.get(fontName);
         }
-        Path path = FileSystems.getDefault().getPath(".", "assets", "Fonts", fontName);
+        Path path = FileSystems.getDefault().getPath(".", "assets", "fonts", fontName);
         Font font = new Font();
         try {
             font.loadFromFile(path);
