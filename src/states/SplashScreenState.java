@@ -3,7 +3,7 @@ package states;
 
 import architecture.AbstractApplicationState;
 import architecture.AppStateEnum;
-import louveteau.Main;
+import main.Main;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.system.Time;

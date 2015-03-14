@@ -31,9 +31,9 @@ public class Camera {
     
     public View getView(){
         return this.mView;
-    }
-    
+    }    
     
     private Vector2f mTarget;
     private final View mView;
+
 }

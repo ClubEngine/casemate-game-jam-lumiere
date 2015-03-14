@@ -13,15 +13,18 @@ import content.Masks;
 import entities.EntityFactory;
 import graphics.Camera;
 import java.util.List;
-import louveteau.Main;
+import main.Main;
 import map.Loader;
 import map.Map;
 import map.MapObject;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.IntRect;
+import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
 import sounds.MusicEngine;
 import systems.AILumingSystem;
@@ -41,6 +44,7 @@ import systems.MovemementCollideMapSystem;
 import systems.MovemementSystem;
 import systems.MultipleAnimationSystem;
 import systems.PlayerControlSystem;
+import systems.RenderGuiSystem;
 import systems.RenderSpriteSystem;
 
 /**
@@ -58,6 +62,10 @@ public class GameState extends AbstractApplicationState {
     private RenderSpriteSystem mRenderingSystem;
     private DebugRenderingSystem mDebugRenderingSystem;
     private Entity mEntityPlayer;
+    private RenderGuiSystem mRenderGuiSys;
+    private Vector2i mCursorPosition = Vector2i.ZERO;
+    private int mCursorState;
+    private int mCursorObj;
 
     @Override
     public AppStateEnum getStateId() {
@@ -113,21 +121,6 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new GateSystem(getAppContent()));
         world.setSystem(new GateReversedSystem());
 
-//        mEntityPlayer = EntityFactory.createPlayer(getAppContent(),
-//                world,
-//                myMap.getSpawnPoint().x,
-//                myMap.getSpawnPoint().y);
-
-        /* Collectables */
-       
-        
-        List<MapObject> exits = myMap.getObjectsByName("exit");
-        for (MapObject exit : exits) {
-            EntityFactory.createExit(getAppContent(), world, exit.getPosition());
-        }
-
-        
-
         addFilters("filterRed", Masks.COLOR_RED);
         addFilters("filterGreen", Masks.COLOR_GREEN);
         addFilters("filterBlue", Masks.COLOR_BLUE);
@@ -142,20 +135,24 @@ public class GameState extends AbstractApplicationState {
         addGates("gateMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
         addGates("gateCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
+        addExit("exitRed", Masks.COLOR_RED);
+        addExit("exitGreen", Masks.COLOR_GREEN);
+        addExit("exitBlue", Masks.COLOR_BLUE);
+        addExit("exitYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
+        addExit("exitMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
+        addExit("exitCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+        addExit("exitCyan", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+
         EntityFactory.createLuming(getAppContent(), world,
                 myMap.getSpawnPoint(),
                 Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
-
-
 
         world.initialize();
     }
 
     @Override
     public void handleEvent(Event e) {
-        // TODO
         if (e.type == Event.Type.KEY_PRESSED) {
-
             switch (e.asKeyEvent().key) {
                 case ESCAPE:
                     getAppContent().exit();
@@ -181,6 +178,64 @@ public class GameState extends AbstractApplicationState {
                 case UP:
                     break;
             }
+        } else if (e.type == Event.Type.MOUSE_MOVED) {
+            mCursorPosition = e.asMouseEvent().position;
+        } else if (e.type == Event.Type.MOUSE_BUTTON_RELEASED) {
+
+            if (new IntRect(0, 600 - 150, 800, 150).contains(mCursorPosition)) {
+                if (new IntRect(0, 600 - 64, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 1;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 2;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 3;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 4;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 5;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 6;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 7;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 8;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 9;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 10;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 10;
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                    mCursorObj = 12;
+                }
+            } else if (mCursorObj != 0) {
+
+                Vector2f pos = (myMap.getRealPosition(
+                        myMap.getTilePosition(
+                                getGraphicEngine().getRealPoint(mCursorPosition), 1
+                        ), 1));
+
+                switch (mCursorObj) {
+                    case 1:
+                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_RED);
+                        break;
+                    case 2:
+                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_GREEN);
+                        break;
+                    case 3:
+                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_BLUE);
+                        break;
+                    case 4:
+                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_YELLOW);
+                        break;
+                    case 5:
+                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_MAGENTA);
+                        break;
+                    case 6:
+                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_CYAN);
+                        break;
+                }
+            }
         }
     }
 
@@ -195,32 +250,25 @@ public class GameState extends AbstractApplicationState {
         final RenderTarget target = getGraphicEngine().getRenderTarget();
 
         target.clear(new Color(64, 64, 64));
-        // Drawing map
-
-        myMap.render(getGraphicEngine(), new Vector2f(15.4f, 15.3f), 64, 64);
-        mRenderingSystem.process();
-        myMap.renderFg(getGraphicEngine(),new Vector2f(0, 0),16,16);
-
-        // TODO : draw HUD && text if any
 
         Camera cam = getGraphicEngine().getCamera();
         cam.setTarget(new Vector2f(400, 300));
-//        Transformation compo = mEntityPlayer.getComponent(Transformation.class);
-//        if(compo != null){
-//            cam.setTarget(compo.getTransformable().getPosition());
-//        }
-        
-        
-       // Vector2f camPos = new Vector2f(cam.getTopLeft().x/16 + 1,cam.getTopLeft().y/16 + 1);
-       // System.out.println(cam.getView().getSize().x);
-        myMap.render(getGraphicEngine(), cam.getTopLeft() , (int)(cam.getView().getSize().x*1.5), (int)(cam.getView().getSize().y*1.5 ));
 
+        // Drawing map
+        myMap.render(getGraphicEngine(), cam.getTopLeft(), (int) (cam.getView().getSize().x * 1.5), (int) (cam.getView().getSize().y * 1.5));
         mRenderingSystem.process();
-        myMap.renderFg(getGraphicEngine(), cam.getTopLeft(),(int)(cam.getView().getSize().x*1.5) , (int)(cam.getView().getSize().y*1.5) ) ;
+        myMap.renderFg(getGraphicEngine(), cam.getTopLeft(), (int) (cam.getView().getSize().x * 1.5), (int) (cam.getView().getSize().y * 1.5));
 
-        // TODO : draw HUD && text if any
         if (mDebugGraphics) {
             mDebugRenderingSystem.process();
+        }
+
+        getGraphicEngine().resetView();
+
+        if (mCursorObj != 0) {
+            RectangleShape rs = new RectangleShape(new Vector2f(64, 64));
+            rs.setPosition(Vector2f.add(new Vector2f(15, 15), new Vector2f(mCursorPosition)));
+            getGraphicEngine().getRenderTarget().draw(rs);
         }
 
     }
@@ -236,6 +284,13 @@ public class GameState extends AbstractApplicationState {
         List<MapObject> gates = myMap.getObjectsByName(gateName);
         for (MapObject gate : gates) {
             EntityFactory.createGate(getAppContent(), world, gate.getPosition(), color);
+        }
+    }
+
+    private void addExit(String exitName, int color) {
+        List<MapObject> exits = myMap.getObjectsByName(exitName);
+        for (MapObject exit : exits) {
+            EntityFactory.createExit(getAppContent(), world, exit.getPosition(), color);
         }
     }
 

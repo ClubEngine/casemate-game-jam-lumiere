@@ -291,15 +291,33 @@ public class EntityFactory {
         return luming;
     }
 
-    public static Entity createExit(AppContent appContent, World world, Vector2f position) {
+    public static Entity createExit(AppContent appContent, World world, Vector2f position, int color) {
         Entity exit = world.createEntity();
 
         exit.addComponent(new DebugName("An exit"));
         exit.addComponent(new Transformation(position));
-        exit.addComponent(new TextureComponent(getTexture(appContent, "coin.png")), ComponentType.getTypeFor(AbstractTextureComponent.class));
+
+        String texPath = "";
+        if (color == COLOR_RED) {
+            texPath = "Portail_fin_rouge.png";
+        } else if (color == COLOR_GREEN) {
+            texPath = "Portail_fin_vert.png";
+        } else if (color == COLOR_BLUE) {
+            texPath = "Portail_fin_bleu.png";
+        } else if (color == (COLOR_RED | COLOR_GREEN)) {
+            texPath = "Portail_fin_jaune.png";
+        } else if (color == (COLOR_RED | COLOR_BLUE)) {
+            texPath = "Portail_fin_magenta.png";
+        } else if (color == (COLOR_GREEN | COLOR_BLUE)) {
+            texPath = "Portail_fin_cyan.png";
+        } else if (color == (COLOR_RED | COLOR_GREEN | COLOR_BLUE)) {
+            texPath = "Portail_fin_blanc.png";
+        }
+
+        exit.addComponent(new TextureComponent(getTexture(appContent, texPath)), ComponentType.getTypeFor(AbstractTextureComponent.class));
 
         AnimatedTextureRect animatedRect
-                = AnimatedTextureRect.createSquareAnimation(new IntRect(0, 0, 64, 64), 8, 8, 1000);
+                = AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 30, 1500, true);
         animatedRect.setLoop(true);
 
         exit.addComponent(animatedRect, ComponentType.getTypeFor(AbstractTextureRect.class));
@@ -307,7 +325,7 @@ public class EntityFactory {
         exit.addComponent(animatedRect, ComponentType.getTypeFor(AnimatedTextureRect.class));
 
         exit.addComponent(new HitBox(new FloatRect(13, 13, 6, 6)));
-        exit.addComponent(new Exit(5));
+        exit.addComponent(new Exit(1, color));
 
         exit.addToWorld();
 
@@ -388,5 +406,8 @@ public class EntityFactory {
 
         return gate;
     }
+
+    
+
 
 }

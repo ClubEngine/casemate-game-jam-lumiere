@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package louveteau;
+package main;
 
 import architecture.AppStateEnum;
 import architecture.Application;
@@ -29,7 +29,7 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        Application app = new Application("Louveteau", args);
+        Application app = new Application("Lumings", args);
         app.setDisplayMode(800, 600, false);
 
         app.addState(new SplashScreenState());
