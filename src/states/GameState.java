@@ -23,6 +23,7 @@ import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.window.event.Event;
 import sounds.MusicEngine;
+import systems.AILumingSystem;
 import systems.AIMonsterSystem;
 import systems.AIPetSystem;
 import systems.AnimateTextRectSystem;
@@ -99,11 +100,12 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new AnimateTextRectSystem());
         world.setSystem(new MultipleAnimationSystem());
         world.setSystem(new DamageSystem());
+        world.setSystem(new AILumingSystem(myMap));
 
-        mEntityPlayer = EntityFactory.createPlayer(getAppContent(),
-                world,
-                myMap.getSpawnPoint().x,
-                myMap.getSpawnPoint().y);
+//        mEntityPlayer = EntityFactory.createPlayer(getAppContent(),
+//                world,
+//                myMap.getSpawnPoint().x,
+//                myMap.getSpawnPoint().y);
 
         /* Collectables */
         List<MapObject> coins = myMap.getObjectsByName("coin");
@@ -120,6 +122,11 @@ public class GameState extends AbstractApplicationState {
         for(MapObject monster : monsters){
             EntityFactory.createMonster(getAppContent(), world, monster.getPosition().x, monster.getPosition().y,monster.getPath());
         }
+
+        EntityFactory.createLuming(getAppContent(), world,
+                myMap.getSpawnPoint().x,
+                myMap.getSpawnPoint().y);
+
 
        // EntityFactory.createMonster(getAppContent(), world, 288 + 288, 96);
 
@@ -201,10 +208,11 @@ public class GameState extends AbstractApplicationState {
         // TODO : draw HUD && text if any
 
         Camera cam = getGraphicEngine().getCamera();
-        Transformation compo = mEntityPlayer.getComponent(Transformation.class);
-        if(compo != null){
-            cam.setTarget(compo.getTransformable().getPosition());
-        }
+        cam.setTarget(new Vector2f(400, 300));
+//        Transformation compo = mEntityPlayer.getComponent(Transformation.class);
+//        if(compo != null){
+//            cam.setTarget(compo.getTransformable().getPosition());
+//        }
         
         
        // Vector2f camPos = new Vector2f(cam.getTopLeft().x/16 + 1,cam.getTopLeft().y/16 + 1);

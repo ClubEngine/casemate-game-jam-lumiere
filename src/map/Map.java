@@ -28,10 +28,10 @@ public class Map {
 
     public Vector2f getSpawnPoint() {
         int i;
-        for (i = 0; i < mObjects.size() && !"spawnpoint".equals(mObjects.get(i).getName().toLowerCase()); i++) {
+        for (i = 0; i < mObjects.size() && !"spawn".equals(mObjects.get(i).getName().toLowerCase()); i++) {
 
         }
-        if (i < mObjects.size() && mObjects.get(i).getName().toLowerCase().equals("spawnpoint")) {
+        if (i < mObjects.size() && mObjects.get(i).getName().toLowerCase().equals("spawn")) {
             return mObjects.get(i).getPosition();
         } else {
             return Vector2f.ZERO;
@@ -85,6 +85,14 @@ public class Map {
         }
 
         return false;
+    }
+
+    public boolean isThereABlock(float x, float y) {
+        int _x = (int) x;
+        int _y = (int) y;
+        int _sx = _x >> TILE_BIT_SHIFT;
+        int _sy = _y >> TILE_BIT_SHIFT;
+        return getCollisionLayer().tileExists(_sx, _sy);
     }
 
     private TileTest getCollisionLayer() {
@@ -275,6 +283,7 @@ public class Map {
         public int getIndex() {
             return mIndex;
         }
+
 
         private final String mName;
         private final int mIndex;

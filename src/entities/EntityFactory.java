@@ -7,6 +7,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
+import components.AILuming;
 import components.AIMonsterComponent;
 import components.AIPetComponent;
 import components.AbstractTextureRect;
@@ -30,7 +31,6 @@ import components.Velocity;
 import content.Animations;
 import content.Groups;
 import content.Masks;
-import java.util.ArrayList;
 import java.util.List;
 import org.jsfml.graphics.ConstTexture;
 import org.jsfml.graphics.FloatRect;
@@ -67,6 +67,7 @@ public class EntityFactory {
         player.addComponent(new Orientation(DOWN));
         player.addComponent(new Collector());
         player.addComponent(new Damageable(Masks.DAMAGE_FROM_MONSTER | Masks.DAMAGE_FROM_NATURE));
+        
         
 
         player.addToWorld();
@@ -230,6 +231,40 @@ public class EntityFactory {
         world.getManager(GroupManager.class).add(fireBall, Groups.DAMAGEABLES);
 
         return fireBall;
+    }
+
+    public static Entity createLuming(AppContent appContent, World world, float x, float y) {
+        Entity luming = world.createEntity();
+        luming.addComponent(new DebugName("Luming"));
+        Transformation t = new Transformation(x, y);
+        t.getTransformable().setOrigin(16, 32);
+        luming.addComponent(t);
+        luming.addComponent(new Velocity());
+
+        luming.addComponent(new TextureComponent(getTexture(appContent, "joueur1.png")));
+
+        MultipleAnimations ma = new MultipleAnimations();
+        ma.add(Animations.GO_LEFT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 32, 32, 32), 4, 500, true));
+        ma.add(Animations.GO_UP, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 96, 32, 32), 4, 500, true));
+        ma.add(Animations.GO_RIGHT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 64, 32, 32), 4, 500, true));
+        ma.add(Animations.GO_DOWN, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 4, 500, true));
+        ma.setAnimation(Animations.GO_RIGHT);
+        luming.addComponent(ma);
+        luming.addComponent(ma, ComponentType.getTypeFor(AbstractTextureRect.class));
+
+        //luming.addComponent(new SpriteAnimation(3, 500, true));
+        luming.addComponent(new HitBox(new FloatRect(-16, -32, 32, 32)));
+        luming.addComponent(new CollideWithMap());
+
+        luming.addComponent(new Orientation(DOWN));
+        //luming.addComponent(new Gravity());
+        luming.addComponent(new AILuming());
+
+        luming.addToWorld();
+
+        world.getManager(GroupManager.class).add(luming, "LUMING");
+
+        return luming;
     }
 
 }

@@ -29,6 +29,8 @@ public class MovemementCollideMapSystem extends EntityProcessingSystem {
     @Mapper
     ComponentMapper<HitBox> hbm;
 
+    
+
     private final AppContent mApp;
     private Map mMap;
 
@@ -52,6 +54,7 @@ public class MovemementCollideMapSystem extends EntityProcessingSystem {
 
         Vector2f pos = transm.getPosition();
         Vector2f vel = velm.getVelocity();
+
 
         if (vel.x != 0 || vel.y != 0) {
 

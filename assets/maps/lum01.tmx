@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="71">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="73">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="../textures/tiles.png" trans="ff00ff" width="1024" height="2016"/>
  </tileset>
@@ -20,7 +20,7 @@
  </layer>
  <layer name="Collision" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt1UEKwyAQBdCRCu29Gkiulp66blwFVwlqyHsw/LUOn4kAAAAARttzxC9fl5zzTRFLui7fZT5p9Kue51X+PKdjrmU2e+mu1Y+q7oW56Mlc9GROejIXPQHuot6PVtJXvR+tBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4Jn+TcQXLw==
+   eJzt1UEKAjEQBMAJBhT0VwoK+jH31c4lJ8nJJRvZKgh9TpomEQAAAMDW3jViqeslv7mWiFtZL495TmXrW+3PId+8lu+853noZbjePprWC3Oxk7nYyZzsZC528l/O2dVFX9N4ZhcvfQzT/o9eMlb7P3oJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAPn0AGiAX4Q==
   </data>
  </layer>
  <layer name="Deco_col" width="100" height="100">
@@ -44,8 +44,9 @@
   </data>
  </layer>
  <objectgroup name="objs">
-  <object id="67" name="exit" x="515" y="278" width="35" height="33"/>
+  <object id="67" name="exit" x="647.667" y="279.333" width="35" height="33"/>
   <object id="68" name="lumBlue" x="55" y="108" width="39" height="40"/>
   <object id="70" name="lumRed" x="103.5" y="107" width="39" height="40"/>
+  <object id="71" name="spawn" x="220" y="112" width="36" height="36"/>
  </objectgroup>
 </map>

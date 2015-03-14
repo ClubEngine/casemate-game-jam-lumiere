@@ -16,7 +16,7 @@ public class Velocity extends Component {
     }
 
     public Velocity(Vector2f vel) {
-        setVelocity(vel);
+        mVelocity = vel;
     }
 
     public Vector2f getVelocity() {
@@ -24,6 +24,10 @@ public class Velocity extends Component {
     }
 
     public void setVelocity(Vector2f velocity) {
-        this.mVelocity = velocity;
+        mVelocity = velocity;
+    }
+
+    public void setVelocity(float x, float y) {
+        mVelocity = new Vector2f(x, y);
     }
 }
