@@ -266,7 +266,9 @@ public class EntityFactory {
         ma.add(Animations.GO_UP, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 96, 32, 32), 4, 500, true));
         ma.add(Animations.GO_RIGHT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 64, 32, 32), 4, 500, true));
         ma.add(Animations.GO_DOWN, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 4, 500, true));
-        ma.add(Animations.EXIT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 12 * 32, 32, 32), 4, 500, false));
+        ma.add(Animations.FALLING, AnimatedTextureRect.createLinearAnimation(new IntRect(32, 0, 32, 32), 1, 500, false));
+        ma.add(Animations.DEAD, AnimatedTextureRect.createLinearAnimation(new IntRect(32, 0, 32, 32), 1, 500, false));
+        ma.add(Animations.EXIT, AnimatedTextureRect.createLinearAnimation(new IntRect(32, 0, 32, 32), 1, 500, false));
         ma.setAnimation(Animations.GO_RIGHT);
         luming.addComponent(ma);
         luming.addComponent(ma, ComponentType.getTypeFor(AbstractTextureRect.class));
@@ -326,7 +328,7 @@ public class EntityFactory {
         } else if (color == (COLOR_RED | COLOR_GREEN)) {
             texPath = "filtre_jaune.png";
         } else if (color == (COLOR_RED | COLOR_BLUE)) {
-            texPath = "filtre_rouge.png";
+            texPath = "filtre_magenta.png";
         } else if (color == (COLOR_GREEN | COLOR_BLUE)) {
             texPath = "filtre_cyan.png";
         }

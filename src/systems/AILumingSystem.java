@@ -10,6 +10,7 @@ import static components.AILuming.LumState.COLLECTED;
 import static components.AILuming.LumState.DEAD;
 import static components.AILuming.LumState.FALLING;
 import static components.AILuming.LumState.MOVING;
+import components.AnimatedAlpha;
 import components.CollideWithMap;
 import components.ExitCollected;
 import components.HitBox;
@@ -21,6 +22,7 @@ import static components.Orientation.Direction.LEFT;
 import static components.Orientation.Direction.RIGHT;
 import components.Transformation;
 import components.Velocity;
+import content.Animations;
 import static content.Animations.EXIT;
 import static content.Masks.COLOR_BLUE;
 import static content.Masks.COLOR_GREEN;
@@ -30,6 +32,7 @@ import static content.Textures.LUMING_CYAN;
 import static content.Textures.LUMING_GREEN;
 import static content.Textures.LUMING_MAGENTA;
 import static content.Textures.LUMING_RED;
+import static content.Textures.LUMING_WHITE;
 import static content.Textures.LUMING_YELLOW;
 import map.Map;
 import org.jsfml.graphics.FloatRect;
@@ -42,7 +45,7 @@ import systems.helpers.AnimationHelper;
 public class AILumingSystem extends EntityProcessingSystem {
 
     static final float LUM_VELOCITY_X = 60;
-    static final int MAX_FALLING_COUNTER = 120;
+    static final int MAX_FALLING_COUNTER = 90;
     static final float GRAVITY = 100;
 
 
@@ -126,7 +129,10 @@ public class AILumingSystem extends EntityProcessingSystem {
             } else if (color == (COLOR_GREEN | COLOR_BLUE)) {
                 multTexs.setTexture(LUMING_CYAN);
             } else if (color == (COLOR_RED | COLOR_GREEN | COLOR_BLUE)) {
-                multTexs.setTexture(LUMING_CYAN);
+                multTexs.setTexture(LUMING_WHITE);
+            } else if (color == 0) {
+                entity.deleteFromWorld();
+                entity.changedInWorld();
             }
         }
 
@@ -149,6 +155,7 @@ public class AILumingSystem extends EntityProcessingSystem {
                     AnimationHelper.setAnimationByOrientation(ma, orientation);
                 } else if (!isThereGround(t, hitbox)) {
                     nextState = FALLING;
+                    ma.setAnimation(Animations.FALLING);
                     velocity.setVelocity(0, GRAVITY);
                     ailum.rstFallingCounter();
                 }
@@ -160,6 +167,9 @@ public class AILumingSystem extends EntityProcessingSystem {
                     setVelByOrientation(velocity, orientation);
                 } else if (ailum.getFallingCounter() >= MAX_FALLING_COUNTER) {
                     nextState = DEAD;
+                    ma.setAnimation(Animations.DEAD);
+                    entity.addComponent(new AnimatedAlpha(255, -400));
+                    entity.changedInWorld();
                     System.out.println("Dead");
                 } else {
                     ailum.incrFallingCounter();
@@ -167,6 +177,9 @@ public class AILumingSystem extends EntityProcessingSystem {
                 break;
 
             case DEAD:
+                entity.removeComponent(HitBox.class);
+                entity.removeComponent(CollideWithMap.class);
+                entity.changedInWorld();
                 break;
 
             case COLLECTED:
@@ -177,7 +190,11 @@ public class AILumingSystem extends EntityProcessingSystem {
             nextState = COLLECTED;
             velocity.setVelocity(Vector2f.ZERO);
             ma.setAnimation(EXIT);
-            
+
+            entity.addComponent(new AnimatedAlpha(255, -400));
+            entity.removeComponent(HitBox.class);
+            entity.removeComponent(CollideWithMap.class);
+            entity.changedInWorld();
         }
 
         ailum.setState(nextState);

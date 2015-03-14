@@ -11,5 +11,6 @@ public enum Animations implements MultipleAnimationsEnum {
     GO_RIGHT,
     IDLE,
     EXIT,
+    FALLING,
     DEAD
 }
