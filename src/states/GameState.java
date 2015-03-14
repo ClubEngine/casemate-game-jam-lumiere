@@ -121,11 +121,6 @@ public class GameState extends AbstractApplicationState {
         /* Collectables */
        
         
-        List<MapObject> exits = myMap.getObjectsByName("exit");
-        for (MapObject exit : exits) {
-            EntityFactory.createExit(getAppContent(), world, exit.getPosition());
-        }
-
         
 
         addFilters("filterRed", Masks.COLOR_RED);
@@ -141,6 +136,14 @@ public class GameState extends AbstractApplicationState {
         addGates("gateYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
         addGates("gateMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
         addGates("gateCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+
+        addExit("exitRed", Masks.COLOR_RED);
+        addExit("exitGreen", Masks.COLOR_GREEN);
+        addExit("exitBlue", Masks.COLOR_BLUE);
+        addExit("exitYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
+        addExit("exitMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
+        addExit("exitCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+        addExit("exitCyan", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
         EntityFactory.createLuming(getAppContent(), world,
                 myMap.getSpawnPoint(),
@@ -236,6 +239,13 @@ public class GameState extends AbstractApplicationState {
         List<MapObject> gates = myMap.getObjectsByName(gateName);
         for (MapObject gate : gates) {
             EntityFactory.createGate(getAppContent(), world, gate.getPosition(), color);
+        }
+    }
+
+    private void addExit(String exitName, int color) {
+        List<MapObject> exits = myMap.getObjectsByName(exitName);
+        for (MapObject exit : exits) {
+            EntityFactory.createExit(getAppContent(), world, exit.getPosition(), color);
         }
     }
 

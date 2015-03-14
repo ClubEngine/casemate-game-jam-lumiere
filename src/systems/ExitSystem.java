@@ -8,6 +8,7 @@ import com.artemis.annotations.Mapper;
 import com.artemis.managers.GroupManager;
 import com.artemis.systems.IntervalEntityProcessingSystem;
 import com.artemis.utils.ImmutableBag;
+import components.AILuming;
 import components.Exit;
 import components.ExitCollected;
 import components.HitBox;
@@ -31,6 +32,9 @@ public class ExitSystem extends IntervalEntityProcessingSystem {
 
     @Mapper
     ComponentMapper<Exit> em;
+
+    @Mapper
+    ComponentMapper<AILuming> lm;
 
     private final AppContent mAppContent;
     private ImmutableBag<Entity> mLumings;
@@ -63,14 +67,17 @@ public class ExitSystem extends IntervalEntityProcessingSystem {
                         tm.get(luming),
                         hm.get(luming))) {
 
-                    luming.addComponent(new ExitCollected());
-                    luming.changedInWorld();
+                    Exit e = em.get(exit);
 
-                    em.get(exit).addCollectedLuming(luming);
+                    if (e.getMaskColor() == lm.get(luming).getMaskColor()) {
 
-                    mAppContent.getMusicEngine().getSound("coin.wav").play();
+                        luming.addComponent(new ExitCollected());
+                        luming.changedInWorld();
 
-                    
+                        e.addCollectedLuming(luming);
+
+                        mAppContent.getMusicEngine().getSound("coin.wav").play();
+                    }
 
                 }
 

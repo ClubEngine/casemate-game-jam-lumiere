@@ -14,12 +14,15 @@ public class Exit extends Component {
     private int mNumberLemmingsCollected;
     private final int mNumberLemmingsRequested;
 
+    private int mColor;
+
     private Set<Entity> lumingsCollected;
 
-    public Exit(int numberLemmingsRequested) {
+    public Exit(int numberLemmingsRequested, int color) {
         this.mNumberLemmingsCollected = 0;
         this.mNumberLemmingsRequested = numberLemmingsRequested;
         lumingsCollected = new HashSet<>();
+        mColor = color;
     }
 
     public void incrNumberLumingsCollected() {
@@ -43,5 +46,8 @@ public class Exit extends Component {
         return lumingsCollected.add(lum);
     }
 
+    public int getMaskColor() {
+        return mColor;
+    }
 
 }
