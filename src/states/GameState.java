@@ -13,7 +13,7 @@ import content.Masks;
 import entities.EntityFactory;
 import graphics.Camera;
 import java.util.List;
-import louveteau.Main;
+import main.Main;
 import map.Loader;
 import map.Map;
 import map.MapObject;
