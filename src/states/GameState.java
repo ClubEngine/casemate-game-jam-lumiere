@@ -44,7 +44,6 @@ import systems.MovemementCollideMapSystem;
 import systems.MovemementSystem;
 import systems.MultipleAnimationSystem;
 import systems.PlayerControlSystem;
-import systems.RenderGuiSystem;
 import systems.RenderSpriteSystem;
 
 /**
@@ -62,7 +61,6 @@ public class GameState extends AbstractApplicationState {
     private RenderSpriteSystem mRenderingSystem;
     private DebugRenderingSystem mDebugRenderingSystem;
     private Entity mEntityPlayer;
-    private RenderGuiSystem mRenderGuiSys;
     private Vector2i mCursorPosition = Vector2i.ZERO;
     private int mCursorState;
     private int mCursorObj;
