@@ -14,7 +14,7 @@ public class Gate extends Component {
         this.mColor = color;
     }
 
-    public int getColor() {
+    public int getMaskColor() {
         return mColor;
     }
 

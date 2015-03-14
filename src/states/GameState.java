@@ -35,6 +35,8 @@ import systems.DebugRenderingSystem;
 import systems.ExitSystem;
 import systems.ExpirationSystem;
 import systems.FilterSystem;
+import systems.GateReversedSystem;
+import systems.GateSystem;
 import systems.MovemementCollideMapSystem;
 import systems.MovemementSystem;
 import systems.MultipleAnimationSystem;
@@ -108,6 +110,8 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new ExitSystem(getAppContent()));
         world.setSystem(new FilterSystem(getAppContent()));
         world.setSystem(new AnimateAlphaSystem());
+        world.setSystem(new GateSystem(getAppContent()));
+        world.setSystem(new GateReversedSystem());
 
 //        mEntityPlayer = EntityFactory.createPlayer(getAppContent(),
 //                world,
@@ -122,6 +126,8 @@ public class GameState extends AbstractApplicationState {
             EntityFactory.createExit(getAppContent(), world, exit.getPosition());
         }
 
+        
+
         addFilters("filterRed", Masks.COLOR_RED);
         addFilters("filterGreen", Masks.COLOR_GREEN);
         addFilters("filterBlue", Masks.COLOR_BLUE);
@@ -129,6 +135,12 @@ public class GameState extends AbstractApplicationState {
         addFilters("filterMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
         addFilters("filterCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
+        addGates("gateRed", Masks.COLOR_RED);
+        addGates("gateGreen", Masks.COLOR_GREEN);
+        addGates("gateBlue", Masks.COLOR_BLUE);
+        addGates("gateYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
+        addGates("gateMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
+        addGates("gateCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
         EntityFactory.createLuming(getAppContent(), world,
                 myMap.getSpawnPoint(),
@@ -217,6 +229,13 @@ public class GameState extends AbstractApplicationState {
         List<MapObject> filters = myMap.getObjectsByName(filterName);
         for (MapObject filter : filters) {
             EntityFactory.createFilter(getAppContent(), world, filter.getPosition(), color);
+        }
+    }
+
+    private void addGates(String gateName, int color) {
+        List<MapObject> gates = myMap.getObjectsByName(gateName);
+        for (MapObject gate : gates) {
+            EntityFactory.createGate(getAppContent(), world, gate.getPosition(), color);
         }
     }
 

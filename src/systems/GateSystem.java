@@ -9,7 +9,8 @@ import com.artemis.managers.GroupManager;
 import com.artemis.systems.IntervalEntityProcessingSystem;
 import com.artemis.utils.ImmutableBag;
 import components.AILuming;
-import components.Filter;
+import components.Gate;
+import components.GateReversed;
 import components.HitBox;
 import components.Transformation;
 import content.Groups;
@@ -27,10 +28,13 @@ public class GateSystem extends IntervalEntityProcessingSystem {
     ComponentMapper<HitBox> hm;
 
     @Mapper
-    ComponentMapper<Filter> fm;
+    ComponentMapper<Gate> gm;
 
     @Mapper
     ComponentMapper<AILuming> ailm;
+
+    @Mapper
+    ComponentMapper<GateReversed> grm;
 
     private final AppContent mAppContent;
     private ImmutableBag<Entity> mLumings;
@@ -38,7 +42,7 @@ public class GateSystem extends IntervalEntityProcessingSystem {
     @SuppressWarnings("unchecked")
     public GateSystem(AppContent application) {
         super(Aspect.getAspectForAll(
-                Filter.class,
+                Gate.class,
                 Transformation.class,
                 HitBox.class
         ), 0.1f);
@@ -47,29 +51,32 @@ public class GateSystem extends IntervalEntityProcessingSystem {
 
     @Override
     protected void begin() {
-        GroupManager gm = world.getManager(GroupManager.class);
-        mLumings = gm.getEntities(Groups.LUMINGS);
+        GroupManager groupm = world.getManager(GroupManager.class);
+        mLumings = groupm.getEntities(Groups.LUMINGS);
     }
 
     @Override
-    protected void process(Entity exit) {
+    protected void process(Entity gate) {
 
         for (int i = 0, s = mLumings.size(); i < s; ++i) {
             Entity luming = mLumings.get(i);
             if (tm.has(luming) && hm.has(luming)) {
 
-                if (CollisionHelper.isHitting(tm.get(exit),
-                        hm.get(exit),
+                if (CollisionHelper.isHitting(tm.get(gate),
+                        hm.get(gate),
                         tm.get(luming),
                         hm.get(luming))) {
 
                     AILuming ail = ailm.get(luming);
                     final int color = ail.getMaskColor();
-                    int newColor = color & fm.get(exit).getMaskColor();
-                    ail.setMaskColor(newColor);
-                    if (newColor != color) {
-                        ail.colorChanged();
+
+                    if ((color & gm.get(gate).getMaskColor()) == 0) {
+                        if (!grm.has(luming)) {
+                            luming.addComponent(new GateReversed());
+                            luming.changedInWorld();
+                        }
                     }
+
                 }
 
             }
