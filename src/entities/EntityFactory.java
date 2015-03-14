@@ -22,6 +22,7 @@ import components.Exit;
 import components.Expiration;
 import components.Filter;
 import components.FixedTextureRect;
+import components.Gate;
 import components.HitBox;
 import components.MultipleAnimations;
 import components.MultipleTextures;
@@ -266,7 +267,9 @@ public class EntityFactory {
         ma.add(Animations.GO_UP, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 96, 32, 32), 4, 500, true));
         ma.add(Animations.GO_RIGHT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 64, 32, 32), 4, 500, true));
         ma.add(Animations.GO_DOWN, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 4, 500, true));
-        ma.add(Animations.EXIT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 12 * 32, 32, 32), 4, 500, false));
+        ma.add(Animations.FALLING, AnimatedTextureRect.createLinearAnimation(new IntRect(32, 0, 32, 32), 1, 500, false));
+        ma.add(Animations.DEAD, AnimatedTextureRect.createLinearAnimation(new IntRect(32, 0, 32, 32), 1, 500, false));
+        ma.add(Animations.EXIT, AnimatedTextureRect.createLinearAnimation(new IntRect(32, 0, 32, 32), 1, 500, false));
         ma.setAnimation(Animations.GO_RIGHT);
         luming.addComponent(ma);
         luming.addComponent(ma, ComponentType.getTypeFor(AbstractTextureRect.class));
@@ -326,7 +329,7 @@ public class EntityFactory {
         } else if (color == (COLOR_RED | COLOR_GREEN)) {
             texPath = "filtre_jaune.png";
         } else if (color == (COLOR_RED | COLOR_BLUE)) {
-            texPath = "filtre_rouge.png";
+            texPath = "filtre_magenta.png";
         } else if (color == (COLOR_GREEN | COLOR_BLUE)) {
             texPath = "filtre_cyan.png";
         }
@@ -347,6 +350,43 @@ public class EntityFactory {
         filter.addToWorld();
 
         return filter;
+    }
+
+    public static Entity createGate(AppContent appContent, World world, Vector2f position, int color) {
+        Entity gate = world.createEntity();
+
+        gate.addComponent(new Transformation(position));
+
+        String texPath = "";
+        if (color == COLOR_RED) {
+            texPath = "porte_rouge.png";
+        } else if (color == COLOR_GREEN) {
+            texPath = "porte_vert.png";
+        } else if (color == COLOR_BLUE) {
+            texPath = "porte_bleu.png";
+        } else if (color == (COLOR_RED | COLOR_GREEN)) {
+            texPath = "porte_jaune.png";
+        } else if (color == (COLOR_RED | COLOR_BLUE)) {
+            texPath = "porte_magenta.png";
+        } else if (color == (COLOR_GREEN | COLOR_BLUE)) {
+            texPath = "porte_cyan.png";
+        }
+
+        gate.addComponent(new TextureComponent(getTexture(appContent, texPath)), ComponentType.getTypeFor(AbstractTextureComponent.class));
+
+        AnimatedTextureRect animatedRect
+                = AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 4, 1000, true);
+
+        gate.addComponent(animatedRect, ComponentType.getTypeFor(AbstractTextureRect.class));
+        // to allow specific accesses
+        gate.addComponent(animatedRect, ComponentType.getTypeFor(AnimatedTextureRect.class));
+
+        gate.addComponent(new HitBox(new FloatRect(13, 13, 6, 6)));
+        gate.addComponent(new Gate(color));
+
+        gate.addToWorld();
+
+        return gate;
     }
 
 }

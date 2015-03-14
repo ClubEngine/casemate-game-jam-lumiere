@@ -10,8 +10,10 @@ import static components.AILuming.LumState.COLLECTED;
 import static components.AILuming.LumState.DEAD;
 import static components.AILuming.LumState.FALLING;
 import static components.AILuming.LumState.MOVING;
+import components.AnimatedAlpha;
 import components.CollideWithMap;
 import components.ExitCollected;
+import components.GateReversed;
 import components.HitBox;
 import components.MultipleAnimations;
 import components.MultipleTextures;
@@ -21,6 +23,7 @@ import static components.Orientation.Direction.LEFT;
 import static components.Orientation.Direction.RIGHT;
 import components.Transformation;
 import components.Velocity;
+import content.Animations;
 import static content.Animations.EXIT;
 import static content.Masks.COLOR_BLUE;
 import static content.Masks.COLOR_GREEN;
@@ -30,6 +33,7 @@ import static content.Textures.LUMING_CYAN;
 import static content.Textures.LUMING_GREEN;
 import static content.Textures.LUMING_MAGENTA;
 import static content.Textures.LUMING_RED;
+import static content.Textures.LUMING_WHITE;
 import static content.Textures.LUMING_YELLOW;
 import map.Map;
 import org.jsfml.graphics.FloatRect;
@@ -42,7 +46,7 @@ import systems.helpers.AnimationHelper;
 public class AILumingSystem extends EntityProcessingSystem {
 
     static final float LUM_VELOCITY_X = 60;
-    static final int MAX_FALLING_COUNTER = 120;
+    static final int MAX_FALLING_COUNTER = 90;
     static final float GRAVITY = 100;
 
 
@@ -72,6 +76,9 @@ public class AILumingSystem extends EntityProcessingSystem {
 
     @Mapper
     ComponentMapper<ExitCollected> ecm;
+
+    @Mapper
+    ComponentMapper<GateReversed> grm;
 
     private final Map mMap;
 
@@ -126,7 +133,13 @@ public class AILumingSystem extends EntityProcessingSystem {
             } else if (color == (COLOR_GREEN | COLOR_BLUE)) {
                 multTexs.setTexture(LUMING_CYAN);
             } else if (color == (COLOR_RED | COLOR_GREEN | COLOR_BLUE)) {
-                multTexs.setTexture(LUMING_CYAN);
+                multTexs.setTexture(LUMING_WHITE);
+            } else if (color == 0) {
+                nextState = DEAD;
+                ma.setAnimation(Animations.DEAD);
+                velocity.setVelocity(Vector2f.ZERO);
+                entity.addComponent(new AnimatedAlpha(255, -400));
+                entity.changedInWorld();
             }
         }
 
@@ -140,17 +153,23 @@ public class AILumingSystem extends EntityProcessingSystem {
             case MOVING:
                 if (isThereWall(t, hitbox, orientation.getDirection())) {
                     System.out.println("Wall");
-                    if (orientation.getDirection() == LEFT) {
-                        orientation.setDirection(RIGHT);
-                    } else if (orientation.getDirection() == RIGHT) {
-                        orientation.setDirection(LEFT);
-                    }
-                    setVelByOrientation(velocity, orientation);
-                    AnimationHelper.setAnimationByOrientation(ma, orientation);
+                    reverseDirection(orientation, velocity, ma);
                 } else if (!isThereGround(t, hitbox)) {
                     nextState = FALLING;
+                    ma.setAnimation(Animations.FALLING);
                     velocity.setVelocity(0, GRAVITY);
                     ailum.rstFallingCounter();
+                } else if (ecm.has(entity)) {
+                    nextState = COLLECTED;
+                    velocity.setVelocity(Vector2f.ZERO);
+                    ma.setAnimation(EXIT);
+
+                    entity.addComponent(new AnimatedAlpha(255, -400));
+                    entity.removeComponent(HitBox.class);
+                    entity.removeComponent(CollideWithMap.class);
+                    entity.changedInWorld();
+                } else if (grm.has(entity) && grm.get(entity).acquit()) {
+                    reverseDirection(orientation, velocity, ma);
                 }
                 break;
 
@@ -158,8 +177,12 @@ public class AILumingSystem extends EntityProcessingSystem {
                 if (isThereGround(t, hitbox)) {
                     nextState = MOVING;
                     setVelByOrientation(velocity, orientation);
+                    AnimationHelper.setAnimationByOrientation(ma, orientation);
                 } else if (ailum.getFallingCounter() >= MAX_FALLING_COUNTER) {
                     nextState = DEAD;
+                    ma.setAnimation(Animations.DEAD);
+                    entity.addComponent(new AnimatedAlpha(255, -400));
+                    entity.changedInWorld();
                     System.out.println("Dead");
                 } else {
                     ailum.incrFallingCounter();
@@ -167,21 +190,26 @@ public class AILumingSystem extends EntityProcessingSystem {
                 break;
 
             case DEAD:
+                entity.removeComponent(HitBox.class);
+                entity.removeComponent(CollideWithMap.class);
+                entity.changedInWorld();
                 break;
 
             case COLLECTED:
                 break;
         }
 
-        if (ecm.has(entity)) {
-            nextState = COLLECTED;
-            velocity.setVelocity(Vector2f.ZERO);
-            ma.setAnimation(EXIT);
-            
-        }
-
         ailum.setState(nextState);
+    }
 
+    private void reverseDirection(Orientation orientation, Velocity velocity, MultipleAnimations ma) {
+        if (orientation.getDirection() == LEFT) {
+            orientation.setDirection(RIGHT);
+        } else if (orientation.getDirection() == RIGHT) {
+            orientation.setDirection(LEFT);
+        }
+        setVelByOrientation(velocity, orientation);
+        AnimationHelper.setAnimationByOrientation(ma, orientation);
     }
 
     private boolean isThereWall(Transformation t, FloatRect hitbox, Direction direction) {
