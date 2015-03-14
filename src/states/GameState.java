@@ -9,6 +9,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.TeamManager;
 import components.Orientation;
 import components.Transformation;
+import content.Masks;
 import entities.EntityFactory;
 import graphics.Camera;
 import java.util.List;
@@ -30,7 +31,9 @@ import systems.AnimateTextRectSystem;
 import systems.CollectSystem;
 import systems.DamageSystem;
 import systems.DebugRenderingSystem;
+import systems.ExitSystem;
 import systems.ExpirationSystem;
+import systems.FilterSystem;
 import systems.MovemementCollideMapSystem;
 import systems.MovemementSystem;
 import systems.MultipleAnimationSystem;
@@ -101,6 +104,8 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new MultipleAnimationSystem());
         world.setSystem(new DamageSystem());
         world.setSystem(new AILumingSystem(myMap));
+        world.setSystem(new ExitSystem(getAppContent()));
+        world.setSystem(new FilterSystem(getAppContent()));
 
 //        mEntityPlayer = EntityFactory.createPlayer(getAppContent(),
 //                world,
@@ -108,29 +113,25 @@ public class GameState extends AbstractApplicationState {
 //                myMap.getSpawnPoint().y);
 
         /* Collectables */
-        List<MapObject> coins = myMap.getObjectsByName("coin");
-        for (MapObject coin : coins) {
-            EntityFactory.createCoin(getAppContent(), world, coin.getPosition().x, coin.getPosition().y);
-        }
+       
         
-        List<MapObject> sheeps = myMap.getObjectsByName("sheep");
-        for(MapObject sheep : sheeps){
-            EntityFactory.createPet(getAppContent(), world, sheep.getPosition().x, sheep.getPosition().y);
+        List<MapObject> exits = myMap.getObjectsByName("exit");
+        for (MapObject exit : exits) {
+            EntityFactory.createExit(getAppContent(), world, exit.getPosition());
         }
-        
-        List<MapObject> monsters = myMap.getObjectsByName("littleDragon");
-        for(MapObject monster : monsters){
-            EntityFactory.createMonster(getAppContent(), world, monster.getPosition().x, monster.getPosition().y,monster.getPath());
-        }
+
+        addFilters("filterRed", Masks.COLOR_RED);
+        addFilters("filterBlue", Masks.COLOR_BLUE);
+        addFilters("filterGreen", Masks.COLOR_GREEN);
+        addFilters("filterMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
+       
+
 
         EntityFactory.createLuming(getAppContent(), world,
-                myMap.getSpawnPoint().x,
-                myMap.getSpawnPoint().y);
+                myMap.getSpawnPoint(),
+                Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
 
-       // EntityFactory.createMonster(getAppContent(), world, 288 + 288, 96);
-
-        EntityFactory.createFire(getAppContent(), world, 312, 312);
 
         world.initialize();
     }
@@ -153,17 +154,7 @@ public class GameState extends AbstractApplicationState {
                 case UP:
                     mPlayerControlSystem.goUp();
                     break;
-                case LEFT:
-                    mPlayerControlSystem.goLeft();
-                    break;
-                case DOWN:
-                    mPlayerControlSystem.goDown();
-                    break;
-                case RIGHT:
-                    mPlayerControlSystem.goRight();
-                    break;
                 case SPACE:
-                    mPlayerControlSystem.attack();
                     break;
                 case F:
                     Vector2f pos = mEntityPlayer.getComponent(Transformation.class).getPosition();
@@ -173,16 +164,6 @@ public class GameState extends AbstractApplicationState {
         } else if (e.type == Event.Type.KEY_RELEASED) {
             switch (e.asKeyEvent().key) {
                 case UP:
-                    mPlayerControlSystem.stopUp();
-                    break;
-                case LEFT:
-                    mPlayerControlSystem.stopLeft();
-                    break;
-                case DOWN:
-                    mPlayerControlSystem.stopDown();
-                    break;
-                case RIGHT:
-                    mPlayerControlSystem.stopRight();
                     break;
             }
         }
@@ -227,6 +208,13 @@ public class GameState extends AbstractApplicationState {
             mDebugRenderingSystem.process();
         }
 
+    }
+
+    private void addFilters(String filterName, int color) {
+        List<MapObject> filters = myMap.getObjectsByName(filterName);
+        for (MapObject filter : filters) {
+            EntityFactory.createFilter(getAppContent(), world, filter.getPosition(), color);
+        }
     }
 
 }

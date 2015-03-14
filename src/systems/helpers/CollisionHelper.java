@@ -38,4 +38,21 @@ public class CollisionHelper {
         return rectA.intersection(rectB) != null;
     }
 
+    /**
+     * Rect - Point intersection
+     *
+     * @param transA
+     * @param hitA
+     * @param point
+     * @return
+     */
+    public static boolean isHitting(Transformation transA, HitBox hitA, Transformation point) {
+        Vector2f posA = transA.getTransformable().getPosition();
+        FloatRect rectA = hitA.moveCopy(posA);
+
+        Vector2f posB = point.getTransformable().getPosition();
+
+        return rectA.contains(posB);
+    }
+
 }

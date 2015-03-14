@@ -1,13 +1,12 @@
 
 package components;
 
-import com.artemis.Component;
 import org.jsfml.graphics.ConstTexture;
 
 /**
  *
  */
-public class TextureComponent extends Component {
+public class TextureComponent extends AbstractTextureComponent {
 
     private final ConstTexture texture;
 
@@ -15,6 +14,7 @@ public class TextureComponent extends Component {
         this.texture = texture;
     }
 
+    @Override
     public ConstTexture getTexture() {
         return texture;
     }

@@ -10,7 +10,8 @@ import org.jsfml.graphics.IntRect;
  */
 public class AnimatedTextureRect extends AbstractTextureRect {
 
-    public static AnimatedTextureRect createLinearAnimation(IntRect startingFrame, int nbFrames, long animDuration, boolean loop) {
+    public static AnimatedTextureRect createLinearAnimation(IntRect startingFrame,
+            int nbFrames, long animDuration, boolean loop) {
         final List<IntRect> frames = new ArrayList<>(nbFrames);
         IntRect currentFrame = startingFrame;
         for (int i = 0; i < nbFrames; ++i) {

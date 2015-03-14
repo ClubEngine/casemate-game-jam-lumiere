@@ -49,6 +49,7 @@ public class MultipleAnimations extends AbstractTextureRect {
 
     @Override
     public IntRect getRect() {
+        Validate.notNull(mCurrentAnimation);
         return mCurrentAnimation.getRect();
     }
 

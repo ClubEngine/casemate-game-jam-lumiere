@@ -10,6 +10,7 @@ import com.artemis.managers.TagManager;
 import components.AILuming;
 import components.AIMonsterComponent;
 import components.AIPetComponent;
+import components.AbstractTextureComponent;
 import components.AbstractTextureRect;
 import components.AnimatedTextureRect;
 import components.Collector;
@@ -17,10 +18,13 @@ import components.CollideWithMap;
 import components.DamageMaker;
 import components.Damageable;
 import components.DebugName;
+import components.Exit;
 import components.Expiration;
+import components.Filter;
 import components.FixedTextureRect;
 import components.HitBox;
 import components.MultipleAnimations;
+import components.MultipleTextures;
 import components.Orientation;
 import static components.Orientation.Direction.DOWN;
 import components.Player;
@@ -31,6 +35,10 @@ import components.Velocity;
 import content.Animations;
 import content.Groups;
 import content.Masks;
+import static content.Masks.COLOR_BLUE;
+import static content.Masks.COLOR_GREEN;
+import static content.Masks.COLOR_RED;
+import content.Textures;
 import java.util.List;
 import org.jsfml.graphics.ConstTexture;
 import org.jsfml.graphics.FloatRect;
@@ -233,38 +241,112 @@ public class EntityFactory {
         return fireBall;
     }
 
-    public static Entity createLuming(AppContent appContent, World world, float x, float y) {
+    public static Entity createLuming(AppContent appContent, World world, Vector2f position, int color) {
         Entity luming = world.createEntity();
         luming.addComponent(new DebugName("Luming"));
-        Transformation t = new Transformation(x, y);
+        Transformation t = new Transformation(position.x + 16, position.y + 32);
         t.getTransformable().setOrigin(16, 32);
         luming.addComponent(t);
         luming.addComponent(new Velocity());
 
-        luming.addComponent(new TextureComponent(getTexture(appContent, "joueur1.png")));
+        MultipleTextures mt = new MultipleTextures();
+        mt.add(Textures.LUMING_BLUE, getTexture(appContent, "luming_blue.png"));
+        mt.add(Textures.LUMING_RED, getTexture(appContent, "luming_red.png"));
+        mt.add(Textures.LUMING_GREEN, getTexture(appContent, "luming_green.png"));
+        mt.add(Textures.LUMING_CYAN, getTexture(appContent, "luming_cyan.png"));
+        mt.add(Textures.LUMING_MAGENTA, getTexture(appContent, "luming_magenta.png"));
+        mt.add(Textures.LUMING_WHITE, getTexture(appContent, "luming_white.png"));
+        mt.add(Textures.LUMING_YELLOW, getTexture(appContent, "luming_yellow.png"));
+        mt.setTexture(Textures.LUMING_WHITE);
+        luming.addComponent(mt);
+        luming.addComponent(mt, ComponentType.getTypeFor(AbstractTextureComponent.class));
 
         MultipleAnimations ma = new MultipleAnimations();
         ma.add(Animations.GO_LEFT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 32, 32, 32), 4, 500, true));
         ma.add(Animations.GO_UP, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 96, 32, 32), 4, 500, true));
         ma.add(Animations.GO_RIGHT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 64, 32, 32), 4, 500, true));
         ma.add(Animations.GO_DOWN, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 4, 500, true));
+        ma.add(Animations.EXIT, AnimatedTextureRect.createLinearAnimation(new IntRect(0, 12 * 32, 32, 32), 4, 500, false));
         ma.setAnimation(Animations.GO_RIGHT);
         luming.addComponent(ma);
         luming.addComponent(ma, ComponentType.getTypeFor(AbstractTextureRect.class));
 
         //luming.addComponent(new SpriteAnimation(3, 500, true));
-        luming.addComponent(new HitBox(new FloatRect(-16, -32, 32, 32)));
+        luming.addComponent(new HitBox(new FloatRect(-15, -31, 30, 30)));
         luming.addComponent(new CollideWithMap());
 
         luming.addComponent(new Orientation(DOWN));
         //luming.addComponent(new Gravity());
-        luming.addComponent(new AILuming());
+        AILuming ail = new AILuming(color);
+        ail.colorChanged();
+        luming.addComponent(ail);
 
         luming.addToWorld();
 
-        world.getManager(GroupManager.class).add(luming, "LUMING");
+        world.getManager(GroupManager.class).add(luming, Groups.LUMINGS);
 
         return luming;
+    }
+
+    public static Entity createExit(AppContent appContent, World world, Vector2f position) {
+        Entity exit = world.createEntity();
+
+        exit.addComponent(new DebugName("An exit"));
+        exit.addComponent(new Transformation(position));
+        exit.addComponent(new TextureComponent(getTexture(appContent, "coin.png")), ComponentType.getTypeFor(AbstractTextureComponent.class));
+
+        AnimatedTextureRect animatedRect
+                = AnimatedTextureRect.createSquareAnimation(new IntRect(0, 0, 64, 64), 8, 8, 1000);
+        animatedRect.setLoop(true);
+
+        exit.addComponent(animatedRect, ComponentType.getTypeFor(AbstractTextureRect.class));
+        // to allow specific accesses
+        exit.addComponent(animatedRect, ComponentType.getTypeFor(AnimatedTextureRect.class));
+
+        exit.addComponent(new HitBox(new FloatRect(13, 13, 6, 6)));
+        exit.addComponent(new Exit(5));
+
+        exit.addToWorld();
+
+        return exit;
+    }
+
+    public static Entity createFilter(AppContent appContent, World world, Vector2f position, int color) {
+        Entity filter = world.createEntity();
+
+        filter.addComponent(new Transformation(position));
+
+        String texPath = "";
+        if (color == COLOR_RED) {
+            texPath = "filtre_rouge.png";
+        } else if (color == COLOR_GREEN) {
+            texPath = "filtre_vert.png";
+        } else if (color == COLOR_BLUE) {
+            texPath = "filtre_bleu.png";
+        } else if (color == (COLOR_RED | COLOR_GREEN)) {
+            texPath = "filtre_jaune.png";
+        } else if (color == (COLOR_RED | COLOR_BLUE)) {
+            texPath = "filtre_rouge.png";
+        } else if (color == (COLOR_GREEN | COLOR_BLUE)) {
+            texPath = "filtre_cyan.png";
+        }
+
+
+        filter.addComponent(new TextureComponent(getTexture(appContent, texPath)), ComponentType.getTypeFor(AbstractTextureComponent.class));
+
+        AnimatedTextureRect animatedRect
+                = AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 11, 1000, true);
+
+        filter.addComponent(animatedRect, ComponentType.getTypeFor(AbstractTextureRect.class));
+        // to allow specific accesses
+        filter.addComponent(animatedRect, ComponentType.getTypeFor(AnimatedTextureRect.class));
+
+        filter.addComponent(new HitBox(new FloatRect(13, 13, 6, 6)));
+        filter.addComponent(new Filter(color));
+
+        filter.addToWorld();
+
+        return filter;
     }
 
 }

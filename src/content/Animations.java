@@ -8,5 +8,8 @@ public enum Animations implements MultipleAnimationsEnum {
     GO_UP,
     GO_LEFT,
     GO_DOWN,
-    GO_RIGHT
+    GO_RIGHT,
+    IDLE,
+    EXIT,
+    DEAD
 }
