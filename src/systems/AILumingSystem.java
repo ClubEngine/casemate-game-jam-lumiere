@@ -13,6 +13,7 @@ import static components.AILuming.LumState.MOVING;
 import components.AnimatedAlpha;
 import components.CollideWithMap;
 import components.ExitCollected;
+import components.GateReversed;
 import components.HitBox;
 import components.MultipleAnimations;
 import components.MultipleTextures;
@@ -76,6 +77,9 @@ public class AILumingSystem extends EntityProcessingSystem {
     @Mapper
     ComponentMapper<ExitCollected> ecm;
 
+    @Mapper
+    ComponentMapper<GateReversed> grm;
+
     private final Map mMap;
 
     @SuppressWarnings("unchecked")
@@ -131,7 +135,10 @@ public class AILumingSystem extends EntityProcessingSystem {
             } else if (color == (COLOR_RED | COLOR_GREEN | COLOR_BLUE)) {
                 multTexs.setTexture(LUMING_WHITE);
             } else if (color == 0) {
-                entity.deleteFromWorld();
+                nextState = DEAD;
+                ma.setAnimation(Animations.DEAD);
+                velocity.setVelocity(Vector2f.ZERO);
+                entity.addComponent(new AnimatedAlpha(255, -400));
                 entity.changedInWorld();
             }
         }
@@ -146,18 +153,23 @@ public class AILumingSystem extends EntityProcessingSystem {
             case MOVING:
                 if (isThereWall(t, hitbox, orientation.getDirection())) {
                     System.out.println("Wall");
-                    if (orientation.getDirection() == LEFT) {
-                        orientation.setDirection(RIGHT);
-                    } else if (orientation.getDirection() == RIGHT) {
-                        orientation.setDirection(LEFT);
-                    }
-                    setVelByOrientation(velocity, orientation);
-                    AnimationHelper.setAnimationByOrientation(ma, orientation);
+                    reverseDirection(orientation, velocity, ma);
                 } else if (!isThereGround(t, hitbox)) {
                     nextState = FALLING;
                     ma.setAnimation(Animations.FALLING);
                     velocity.setVelocity(0, GRAVITY);
                     ailum.rstFallingCounter();
+                } else if (ecm.has(entity)) {
+                    nextState = COLLECTED;
+                    velocity.setVelocity(Vector2f.ZERO);
+                    ma.setAnimation(EXIT);
+
+                    entity.addComponent(new AnimatedAlpha(255, -400));
+                    entity.removeComponent(HitBox.class);
+                    entity.removeComponent(CollideWithMap.class);
+                    entity.changedInWorld();
+                } else if (grm.has(entity) && grm.get(entity).acquit()) {
+                    reverseDirection(orientation, velocity, ma);
                 }
                 break;
 
@@ -165,6 +177,7 @@ public class AILumingSystem extends EntityProcessingSystem {
                 if (isThereGround(t, hitbox)) {
                     nextState = MOVING;
                     setVelByOrientation(velocity, orientation);
+                    AnimationHelper.setAnimationByOrientation(ma, orientation);
                 } else if (ailum.getFallingCounter() >= MAX_FALLING_COUNTER) {
                     nextState = DEAD;
                     ma.setAnimation(Animations.DEAD);
@@ -186,19 +199,17 @@ public class AILumingSystem extends EntityProcessingSystem {
                 break;
         }
 
-        if (ecm.has(entity)) {
-            nextState = COLLECTED;
-            velocity.setVelocity(Vector2f.ZERO);
-            ma.setAnimation(EXIT);
-
-            entity.addComponent(new AnimatedAlpha(255, -400));
-            entity.removeComponent(HitBox.class);
-            entity.removeComponent(CollideWithMap.class);
-            entity.changedInWorld();
-        }
-
         ailum.setState(nextState);
+    }
 
+    private void reverseDirection(Orientation orientation, Velocity velocity, MultipleAnimations ma) {
+        if (orientation.getDirection() == LEFT) {
+            orientation.setDirection(RIGHT);
+        } else if (orientation.getDirection() == RIGHT) {
+            orientation.setDirection(LEFT);
+        }
+        setVelByOrientation(velocity, orientation);
+        AnimationHelper.setAnimationByOrientation(ma, orientation);
     }
 
     private boolean isThereWall(Transformation t, FloatRect hitbox, Direction direction) {

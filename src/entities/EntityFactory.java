@@ -22,6 +22,7 @@ import components.Exit;
 import components.Expiration;
 import components.Filter;
 import components.FixedTextureRect;
+import components.Gate;
 import components.HitBox;
 import components.MultipleAnimations;
 import components.MultipleTextures;
@@ -349,6 +350,43 @@ public class EntityFactory {
         filter.addToWorld();
 
         return filter;
+    }
+
+    public static Entity createGate(AppContent appContent, World world, Vector2f position, int color) {
+        Entity gate = world.createEntity();
+
+        gate.addComponent(new Transformation(position));
+
+        String texPath = "";
+        if (color == COLOR_RED) {
+            texPath = "porte_rouge.png";
+        } else if (color == COLOR_GREEN) {
+            texPath = "porte_vert.png";
+        } else if (color == COLOR_BLUE) {
+            texPath = "porte_bleu.png";
+        } else if (color == (COLOR_RED | COLOR_GREEN)) {
+            texPath = "porte_jaune.png";
+        } else if (color == (COLOR_RED | COLOR_BLUE)) {
+            texPath = "porte_magenta.png";
+        } else if (color == (COLOR_GREEN | COLOR_BLUE)) {
+            texPath = "porte_cyan.png";
+        }
+
+        gate.addComponent(new TextureComponent(getTexture(appContent, texPath)), ComponentType.getTypeFor(AbstractTextureComponent.class));
+
+        AnimatedTextureRect animatedRect
+                = AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 4, 1000, true);
+
+        gate.addComponent(animatedRect, ComponentType.getTypeFor(AbstractTextureRect.class));
+        // to allow specific accesses
+        gate.addComponent(animatedRect, ComponentType.getTypeFor(AnimatedTextureRect.class));
+
+        gate.addComponent(new HitBox(new FloatRect(13, 13, 6, 6)));
+        gate.addComponent(new Gate(color));
+
+        gate.addToWorld();
+
+        return gate;
     }
 
 }
