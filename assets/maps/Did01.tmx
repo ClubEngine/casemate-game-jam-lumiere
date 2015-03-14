@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="90">
+ <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
+  <image source="../textures/tiles.png" trans="ff00ff" width="1024" height="2016"/>
+ </tileset>
+ <tileset firstgid="8065" name="generic_platformer_tiles" tilewidth="16" tileheight="16">
+  <image source="../textures/generic_platformer_tiles.png" width="1024" height="768"/>
+ </tileset>
+ <layer name="Ground" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt1EsKgDAMQMHqzez9D+UqkIW1xS+UGXj7EEhKAQAAgLal0/rfaFPp7TkKW6P63chTa+33qKym1uI+npL3OVIWdxFxX71Q/lH+1fvOfpa9AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjNkBZgwNvA==
+  </data>
+ </layer>
+ <layer name="QuiTue" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <layer name="Decoration" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2fduFEcAx3EDpppi+5CSmOayd+Q1KDYdl0NKYiCEkpDXoHdcDokWElOSPAcdG4wbEi0kdF4j39HdiPXc7J3v/kG3+v2kj9AsK3s8P+Z21rS3VFW1Ozo818rVE8F+n050IZ2z0+NKhPA9P2IXfsIAKjW+dSq0jqUaieDrIxOx7q8i2B7MPb/jj1wXryu4D3ediq1jqRYF+aL2xkTEeu/y7IEwc++/+C/XRWPwpVe1/LhrVWgdy9HuE7E3EvzdspxC6z/gMPcvx4og20Ul9+GuVcF1LENPSNS+sHsjHdGFu/6vQ+y9bieVmp4S1sy9dyoKfT27L+zeyER08dph90BjEL8+RoLJoj5LMp61tKbyNYxC57AOzzPCduE7Q61wunOfIZWaRcnJzLO8F33oz/UwkZOJYNc7ag/YTgudw6K6MP/W7TkrfIZy74/L/mhPTmae5aMYw3iuB/NZYtheXG4vvs7MfYXOYe76hveFPW+F//27z/q49GGe3bWoQ32QPzY9pHMSEdxefJ0lipzD3Pe78HugPXOF19v2EO4sDp9X5gzUgU50BfnjdO45mwn14nJ78XWWLnIOe9US/R7odrEr1IXtMS77w5yBetGH/iB/bHqYyMlEcHvxdZYJCp/DlgX57992X0TtDdtZnPow56FRjGE8yB+bHhLJLNuLy+3F19lEkH8OCxsNJq+/7x0v/LwYCHUWp88rc6aqRR3qk/lj00M6JxHB7cXXWSKZf5YLC3/P8F7xvafbs5ftLE77w5ypOtCJrmT+OB36M4rbi6+zdDL/LBcW/p6jTdG/Nwmfg5eH7olLH9OY+3TMQDVmYhZmYw7mYh5qMB8LsDDwn8MWe64XGw80V1WdZz0v4CIu4bI5b9PJeFPx3ynGrY9VzH011mAtWtGGdViPDdiITdiMLdga+M9h2zzXpzJ+yno+w3O8wMsCfbji1scB5n4Qh3AYR3AUx3AcJ3ASp3AaZ3A28J/DznmuT2X8Fb7GN2jAErN/2Df1zcX/Xypufdxk7rdwG3dwF/dwHw8wiCE8xCMM43Ew+RzW66xxofOab/wdvscP6Db7hx460dVc/P+lTA9XYtTHNJ6f0zED1ZiJWZiNOZiLeagx555Gfmbsxh7sxb4yxivxbePn89x51u8CLuKS6ZYe+tDfHP0+EuZ7Z6zUrGI9VmMN1qIVbViH9diAjdiEnY18luMqruE6bpQx3o9fGz+f556yfs/wHC/M/qGHMYw3R3fgE4c+4pQGul2CpckvPZPyc5O538Jt3MFd3MN9PMAghvAQjzCMx+b3wOY9AWMYN+8eeOK57hu/wVu8w3t8wEd8SmbnUyo7/25sx44K7mNaiucHZqAaMzELszEHczEPNZiPBViIRahFHeqRwGLPdd+4Cc1oQYAkUliZys6nVHb+l+jhMn6r4D5W8XOsxhqsRSvasA7rsQEbsQmbsQVb0Y4OdKILaWzzXPeNd2MP9mIffsYv2J/KzqdUdv4v6OEl/qngPg7wcxzEIRzGERzFMRzHCZzEKZzGGZxFD3rRh35kcM5z3Te+imu4jhv4E3/h71R2PqWy82/AEixNfelVLT83mfst3MYd3MU93McDDGIID/EIw3iMEYxiDOOYwBPPdd/4Dd7iHd7jAz7iUyo7n1LZ+XdjO3ZUcB+KoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoiiKoihKafkfVWUk5g==
+  </data>
+ </layer>
+ <layer name="Collision" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztzscNwgAQRNEtxQdcKMkE0wTJ1EVogA4YCVGAb1h6T/qHvaymCgAAAAAAAADgv8zbqkVaplVapy5t0jbt0j716ZDes6p7U/VIz/Rqxt/H/Dmlc7qkaxrSrf3uGdtvPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANPzAQRTKIQ=
+  </data>
+ </layer>
+ <layer name="Deco_col" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <layer name="Foreground" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <layer name="Deco_fg" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <layer name="Cloud" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <objectgroup name="objs">
+  <object id="67" name="exit_blue" x="976" y="144" width="32" height="32" visible="0"/>
+  <object id="68" name="lumWhite" x="16" y="208" width="32" height="32"/>
+  <object id="70" name="lumRed" x="736" y="560" width="39" height="40" visible="0"/>
+  <object id="71" name="spawn" x="688" y="576" width="32" height="32" visible="0"/>
+  <object id="77" name="filterMagenta" x="624" y="576" width="32" height="32" rotation="-0.385148" visible="0"/>
+  <object id="84" name="ladder_bot_red" x="496" y="592" width="32" height="32" visible="0"/>
+  <object id="87" name="ladder_top_red" x="560" y="592" width="32" height="32" visible="0"/>
+  <object id="89" name="exit_white" x="512" y="304" width="32" height="32"/>
+ </objectgroup>
+</map>
