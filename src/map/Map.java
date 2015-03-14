@@ -260,6 +260,20 @@ public class Map {
 
     public static final int LAST_TILESET = 8064;
 
+    public Vector2i getTilePosition(Vector2f point, int off) {
+        return new Vector2i(
+                ((int) point.x) >> TILE_BIT_SHIFT + off,
+                ((int) point.y) >> TILE_BIT_SHIFT + off
+        );
+    }
+
+    public Vector2f getRealPosition(Vector2i tilePosition, int off) {
+        return new Vector2f(
+                tilePosition.x << TILE_BIT_SHIFT + off,
+                tilePosition.y << TILE_BIT_SHIFT + off
+        );
+    }
+
     public enum LayerType {
 
         GROUND("Ground", 0),

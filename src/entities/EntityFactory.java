@@ -317,7 +317,7 @@ public class EntityFactory {
         exit.addComponent(new TextureComponent(getTexture(appContent, texPath)), ComponentType.getTypeFor(AbstractTextureComponent.class));
 
         AnimatedTextureRect animatedRect
-                = AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 4, 500, true);
+                = AnimatedTextureRect.createLinearAnimation(new IntRect(0, 0, 32, 32), 30, 1500, true);
         animatedRect.setLoop(true);
 
         exit.addComponent(animatedRect, ComponentType.getTypeFor(AbstractTextureRect.class));
@@ -406,5 +406,8 @@ public class EntityFactory {
 
         return gate;
     }
+
+    
+
 
 }

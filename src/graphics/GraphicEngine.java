@@ -110,10 +110,18 @@ public class GraphicEngine {
         mWindow.close();
     }
 
+    public void resetView() {
+        mWindow.setView(mWindow.getDefaultView());
+    }
+
     private Camera mCamera;
     private RenderWindow mWindow;
 
     private Map<String, Texture> mTextures;
     private Map<String, Font> mFonts;
+
+    public Vector2f getRealPoint(Vector2i point) {
+        return mWindow.mapPixelToCoords(point, mCamera.getView());
+    }
 
 }
