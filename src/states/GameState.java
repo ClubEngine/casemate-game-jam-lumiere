@@ -44,7 +44,6 @@ import systems.MovemementCollideMapSystem;
 import systems.MovemementSystem;
 import systems.MultipleAnimationSystem;
 import systems.PlayerControlSystem;
-import systems.RenderGuiSystem;
 import systems.RenderSpriteSystem;
 
 /**
@@ -62,7 +61,6 @@ public class GameState extends AbstractApplicationState {
     private RenderSpriteSystem mRenderingSystem;
     private DebugRenderingSystem mDebugRenderingSystem;
     private Entity mEntityPlayer;
-    private RenderGuiSystem mRenderGuiSys;
     private Vector2i mCursorPosition = Vector2i.ZERO;
     private int mCursorState;
     private int mCursorObj;
@@ -234,6 +232,26 @@ public class GameState extends AbstractApplicationState {
                     case 6:
                         EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_CYAN);
                         break;
+
+                    case 7:
+                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_RED);
+                        break;
+                    case 8:
+                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_GREEN);
+                        break;
+                    case 9:
+                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_BLUE);
+                        break;
+                    case 10:
+                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_YELLOW);
+                        break;
+                    case 11:
+                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_MAGENTA);
+                        break;
+                    case 12:
+                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_CYAN);
+                        break;
+
                 }
             }
         }
@@ -266,8 +284,14 @@ public class GameState extends AbstractApplicationState {
         getGraphicEngine().resetView();
 
         if (mCursorObj != 0) {
-            RectangleShape rs = new RectangleShape(new Vector2f(64, 64));
-            rs.setPosition(Vector2f.add(new Vector2f(15, 15), new Vector2f(mCursorPosition)));
+            Vector2f pos = (myMap.getRealPosition(
+                    myMap.getTilePosition(
+                            getGraphicEngine().getRealPoint(mCursorPosition), 1
+                    ), 1));
+
+            RectangleShape rs = new RectangleShape(new Vector2f(32, 32));
+            rs.setFillColor(new Color(192, 192, 192, 128));
+            rs.setPosition(pos);
             getGraphicEngine().getRenderTarget().draw(rs);
         }
 
