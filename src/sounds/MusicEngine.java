@@ -26,7 +26,7 @@ public class MusicEngine {
             return mSounds.get(soundName);
         } else {
             try {
-                Path myPath = FileSystems.getDefault().getPath("./assets/Sounds", soundName);
+                Path myPath = FileSystems.getDefault().getPath("./assets/sounds", soundName);
                 SoundBuffer sBuffer = new SoundBuffer();
                 sBuffer.loadFromFile(myPath);
                 Sound nSound = new Sound(sBuffer);
@@ -43,7 +43,7 @@ public class MusicEngine {
         if (mMusics.keySet().contains(musicName)) {
             return mMusics.get(musicName);
         } else {
-            Path mPath = FileSystems.getDefault().getPath("./assets/Musics", musicName);
+            Path mPath = FileSystems.getDefault().getPath("./assets/musics", musicName);
             Music mMus = new Music();
             try {
                 mMus.openFromFile(mPath);

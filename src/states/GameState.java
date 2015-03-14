@@ -71,7 +71,7 @@ public class GameState extends AbstractApplicationState {
 
     @Override
     public void initialize() {
-        getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/Maps/maps.tmx");
+        getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/maps/lum01.tmx");
 
         /*
          New Loading system : with loader class
@@ -100,7 +100,10 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new MultipleAnimationSystem());
         world.setSystem(new DamageSystem());
 
-        mEntityPlayer = EntityFactory.createPlayer(getAppContent(), world, myMap.getSpawnPoint().x, myMap.getSpawnPoint().y);
+        mEntityPlayer = EntityFactory.createPlayer(getAppContent(),
+                world,
+                myMap.getSpawnPoint().x,
+                myMap.getSpawnPoint().y);
 
         /* Collectables */
         List<MapObject> coins = myMap.getObjectsByName("coin");
