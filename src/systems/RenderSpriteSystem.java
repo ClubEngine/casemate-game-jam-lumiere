@@ -8,8 +8,10 @@ import com.artemis.annotations.Mapper;
 import com.artemis.systems.EntityProcessingSystem;
 import components.AbstractTextureComponent;
 import components.AbstractTextureRect;
+import components.AnimatedAlpha;
 import components.Transformation;
 import graphics.GraphicEngine;
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Transform;
@@ -25,6 +27,8 @@ public class RenderSpriteSystem extends EntityProcessingSystem {
     ComponentMapper<AbstractTextureComponent> rsm;
     @Mapper
     ComponentMapper<AbstractTextureRect> trm;
+    @Mapper
+    ComponentMapper<AnimatedAlpha> aam;
 
     private final GraphicEngine mGraphicEngine;
     private final Sprite mTmpSprite;
@@ -34,7 +38,8 @@ public class RenderSpriteSystem extends EntityProcessingSystem {
         super(Aspect.getAspectForAll(Transformation.class,
                 AbstractTextureComponent.class,
                 AbstractTextureRect.class
-        ));
+        ).one(AbstractTextureRect.class,
+                AnimatedAlpha.class));
 
         mGraphicEngine = graphicEngine;
         mTmpSprite = new Sprite();
@@ -48,6 +53,12 @@ public class RenderSpriteSystem extends EntityProcessingSystem {
         
         mTmpSprite.setTexture(rs.getTexture());
         mTmpSprite.setTextureRect(tr.getRect());
+
+        if (aam.has(entity)) {
+            mTmpSprite.setColor(new Color(255, 255, 255, aam.get(entity).getAlpha()));
+        } else {
+            mTmpSprite.setColor(Color.WHITE);
+        }
 
         RenderStates renderStates = new RenderStates(transform);
         mGraphicEngine.getRenderTarget().draw(mTmpSprite, renderStates);

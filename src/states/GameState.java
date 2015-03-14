@@ -27,6 +27,7 @@ import sounds.MusicEngine;
 import systems.AILumingSystem;
 import systems.AIMonsterSystem;
 import systems.AIPetSystem;
+import systems.AnimateAlphaSystem;
 import systems.AnimateTextRectSystem;
 import systems.CollectSystem;
 import systems.DamageSystem;
@@ -106,6 +107,7 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new AILumingSystem(myMap));
         world.setSystem(new ExitSystem(getAppContent()));
         world.setSystem(new FilterSystem(getAppContent()));
+        world.setSystem(new AnimateAlphaSystem());
 
 //        mEntityPlayer = EntityFactory.createPlayer(getAppContent(),
 //                world,
@@ -121,10 +123,11 @@ public class GameState extends AbstractApplicationState {
         }
 
         addFilters("filterRed", Masks.COLOR_RED);
-        addFilters("filterBlue", Masks.COLOR_BLUE);
         addFilters("filterGreen", Masks.COLOR_GREEN);
+        addFilters("filterBlue", Masks.COLOR_BLUE);
+        addFilters("filterYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
         addFilters("filterMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
-       
+        addFilters("filterCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
 
         EntityFactory.createLuming(getAppContent(), world,
