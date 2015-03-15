@@ -121,14 +121,13 @@ public class GameState extends AbstractApplicationState {
 
         mShowInterface = getAppContent().getOptions().get("interface", true);
 
+        mLevelId = 0;
         levelReset();
     }
 
     @Override
     public void notifyExiting() {
-        MusicEngine mesMusiques = getAppContent().getMusicEngine();
-        Music gameMusic = mesMusiques.getMusic("Digital_Native.ogg");
-        gameMusic.stop();
+        
     }
 
 
@@ -158,6 +157,9 @@ public class GameState extends AbstractApplicationState {
             System.out.println("No more levels.");
             if (mShowInterface) {
                 getAppContent().goToState(Main.MyStates.GAME_OVER);
+                MusicEngine mesMusiques = getAppContent().getMusicEngine();
+                Music gameMusic = mesMusiques.getMusic("Digital_Native.ogg");
+                gameMusic.stop();
             } else {
                 getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
             }
@@ -281,7 +283,7 @@ public class GameState extends AbstractApplicationState {
         if (e.type == Event.Type.KEY_PRESSED) {
             switch (e.asKeyEvent().key) {
                 case ESCAPE:
-                    getAppContent().exit();
+                    getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
                     break;
                 case R: // reset
                     //mLevelId = 0;

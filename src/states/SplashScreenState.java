@@ -70,11 +70,13 @@ public class SplashScreenState extends AbstractApplicationState {
     public void render() {
         
         final RenderTarget target = getGraphicEngine().getRenderTarget();
+        getGraphicEngine().resetView();
         target.clear(Color.BLACK);
 
-        FloatRect a = current.getGlobalBounds();
+        FloatRect a = current.getLocalBounds();
         
         current.setOrigin(a.width / 2, a.height / 2);
+        current.setPosition(400, 300);
         target.draw(current);
     }
 
