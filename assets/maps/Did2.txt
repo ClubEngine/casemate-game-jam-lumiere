@@ -1,0 +1,1 @@
+Pour traverser une porte, il faut que la couleur du lumming puisse etre obtenue via un mélange avec cette couleur
