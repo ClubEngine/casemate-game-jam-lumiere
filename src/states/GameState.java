@@ -146,17 +146,21 @@ public class GameState extends AbstractApplicationState {
         addGates("gateMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
         addGates("gateCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
-        addExit("exitRed", Masks.COLOR_RED);
-        addExit("exitGreen", Masks.COLOR_GREEN);
-        addExit("exitBlue", Masks.COLOR_BLUE);
-        addExit("exitYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
-        addExit("exitMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
-        addExit("exitCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
-        addExit("exitWhite", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+        addExits("exitRed", Masks.COLOR_RED);
+        addExits("exitGreen", Masks.COLOR_GREEN);
+        addExits("exitBlue", Masks.COLOR_BLUE);
+        addExits("exitYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
+        addExits("exitMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
+        addExits("exitCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+        addExits("exitWhite", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
-        EntityFactory.createLuming(getAppContent(), world,
-                myMap.getSpawnPoint(),
-                Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+        addLumings("lumRed", Masks.COLOR_RED);
+        addLumings("lumGreen", Masks.COLOR_GREEN);
+        addLumings("lumBlue", Masks.COLOR_BLUE);
+        addLumings("lumYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
+        addLumings("lumMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
+        addLumings("lumCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+        addLumings("lumWhite", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
         world.initialize();
     }
@@ -329,12 +333,20 @@ public class GameState extends AbstractApplicationState {
         }
     }
 
-    private void addExit(String exitName, int color) {
+    private void addExits(String exitName, int color) {
         List<MapObject> exits = myMap.getObjectsByName(exitName);
         for (MapObject exit : exits) {
             EntityFactory.createExit(getAppContent(), world, exit.getPosition(), color);
         }
     }
+
+    private void addLumings(String lumName, int color) {
+        List<MapObject> lumings = myMap.getObjectsByName(lumName);
+        for (MapObject luming : lumings) {
+            EntityFactory.createLuming(getAppContent(), world, luming.getPosition(), color);
+        }
+    }
+
 
     public void levelFinish() {
         mLevelId++;
