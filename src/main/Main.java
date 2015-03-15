@@ -38,7 +38,7 @@ public class Main {
         app.addState(new MainMenuState());
         app.addState(new LoadingState());
         app.addState(new GameState());
-        app.setStartingState(MyStates.SPLASHSCREENSTATE);
+        app.setStartingState(MyStates.GAMESTATE);
 
         app.run();
     }

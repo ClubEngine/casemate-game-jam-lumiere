@@ -143,7 +143,7 @@ public class GameState extends AbstractApplicationState {
         addExit("exitYellow", Masks.COLOR_RED | Masks.COLOR_GREEN);
         addExit("exitMagenta", Masks.COLOR_RED | Masks.COLOR_BLUE);
         addExit("exitCyan", Masks.COLOR_GREEN | Masks.COLOR_BLUE);
-        addExit("exitCyan", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
+        addExit("exitWhite", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
         EntityFactory.createLuming(getAppContent(), world,
                 myMap.getSpawnPoint(),
