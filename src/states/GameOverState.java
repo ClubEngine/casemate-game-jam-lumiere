@@ -5,7 +5,6 @@ import architecture.AbstractApplicationState;
 import architecture.AppStateEnum;
 import main.Main;
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.system.Clock;
@@ -67,9 +66,6 @@ public class GameOverState extends AbstractApplicationState {
         getGraphicEngine().resetView();
         target.clear(Color.BLACK);
         
-        FloatRect a = current.getGlobalBounds();
-        
-        current.setOrigin(a.width / 2, a.height / 2);
         target.draw(current);
     }
 
