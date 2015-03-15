@@ -64,8 +64,9 @@ public class GameOverState extends AbstractApplicationState {
     public void render() {
         
         final RenderTarget target = getGraphicEngine().getRenderTarget();
+        getGraphicEngine().resetView();
         target.clear(Color.BLACK);
-
+        
         FloatRect a = current.getGlobalBounds();
         
         current.setOrigin(a.width / 2, a.height / 2);

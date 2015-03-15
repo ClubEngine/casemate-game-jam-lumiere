@@ -88,6 +88,7 @@ public class GameState extends AbstractApplicationState {
     private Clock mClockLevelFinished;
     private String mStringToDisplay = "";
     private int mStringX;
+    private Vector2f mCameraTarget = Vector2f.ZERO;
 
     @Override
     public AppStateEnum getStateId() {
@@ -153,7 +154,11 @@ public class GameState extends AbstractApplicationState {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("No more levels.");
-            getAppContent().goToState(Main.MyStates.GAME_OVER);
+            if (mShowInterface) {
+                getAppContent().goToState(Main.MyStates.GAME_OVER);
+            } else {
+                getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
+            }
             return;
         }
 
@@ -172,6 +177,7 @@ public class GameState extends AbstractApplicationState {
          */
         Loader ld = new Loader(mapFilepath, getGraphicEngine());
         myMap = ld.getMap();
+
 
         /*
          World entities creation
@@ -265,6 +271,7 @@ public class GameState extends AbstractApplicationState {
         // set vars
         mLumingsCollected = 0;
         mRequestedLumings = totalLumingsRequested;
+        mCameraTarget = new Vector2f(400, 300);
     }
 
     @Override
@@ -282,7 +289,16 @@ public class GameState extends AbstractApplicationState {
                     mDebugGraphics = !mDebugGraphics;
                     break;
                 case UP:
-                    mPlayerControlSystem.goUp();
+                    mCameraTarget = Vector2f.add(mCameraTarget, new Vector2f(0, -10));
+                    break;
+                case DOWN:
+                    mCameraTarget = Vector2f.add(mCameraTarget, new Vector2f(0, 10));
+                    break;
+                case LEFT:
+                    mCameraTarget = Vector2f.add(mCameraTarget, new Vector2f(-10, 0));
+                    break;
+                case RIGHT:
+                    mCameraTarget = Vector2f.add(mCameraTarget, new Vector2f(10, 0));
                     break;
                 case SPACE:
                     break;
@@ -290,6 +306,8 @@ public class GameState extends AbstractApplicationState {
                     Vector2f pos = mEntityPlayer.getComponent(Transformation.class).getPosition();
                     Orientation or = mEntityPlayer.getComponent(Orientation.class);
                     EntityFactory.createFireBall(getAppContent(), world, pos, or);
+                    break;
+
             }
         } else if (e.type == Event.Type.KEY_RELEASED) {
             switch (e.asKeyEvent().key) {
@@ -431,7 +449,7 @@ public class GameState extends AbstractApplicationState {
         target.clear(new Color(64, 64, 64));
 
         Camera cam = getGraphicEngine().getCamera();
-        cam.setTarget(new Vector2f(400, 300));
+        cam.setTarget(mCameraTarget);
 
         // Drawing map
         myMap.render(getGraphicEngine(), cam.getTopLeft(), (int) (cam.getView().getSize().x * 1.5), (int) (cam.getView().getSize().y * 1.5));
@@ -443,7 +461,7 @@ public class GameState extends AbstractApplicationState {
         }
 
         // ***
-        getGraphicEngine().resetView();
+        
 
         if (mCursorObj != 0) {
             if (new IntRect(0, 0, 800, 600 - 150).contains(mCursorPosition)) {
@@ -458,6 +476,8 @@ public class GameState extends AbstractApplicationState {
                 getGraphicEngine().getRenderTarget().draw(rs);
             }
         }
+
+        getGraphicEngine().resetView();
 
         target.draw(gui);
 
