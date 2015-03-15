@@ -18,7 +18,12 @@ public class MainMenuState extends AbstractApplicationState {
     public AppStateEnum getStateId() {
         return Main.MyStates.MAINMENUSTATE;
     }
-    
+
+    @Override
+    public void initialize() {
+        getAppContent().getOptions().set("prefix", "lum");
+    }
+
 
     @Override
     public void handleEvent(Event event) {

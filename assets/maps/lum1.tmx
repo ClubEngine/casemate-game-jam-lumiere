@@ -20,7 +20,7 @@
  </layer>
  <layer name="Collision" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2NFqgzAUBuDIhBbmW3WwQfti7VMvFw3bHI4k1Rrn98EhV+ei0dM/MQQAvjt0IRy78r7X2DNU9PG397inHxX7eo49F89jNWmOxivrSHM0XmGP5HVb5PVP1z6EWz/fWmoqv/ea56f4W9+6+dbS/ZvKb3le5iXuUd/9XtP+7e29XtvUfCTe68csdc4xJ20xJ20yJ20xJ/VSlhwya4nscW//cryfW0trTu7ty8q9h8uZ58i9h8sZgG1I59XcGp+Da3tLeoZR/3/O/ZpzbUsF7EfuN5Gt1Nat/f8vTwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgOQT7fZEZg==
+   eJzt2MGKwjAQANAUCwr6V7vggv6YfvXmsMG1SyUJrU2378GQ0xycdpxMQwDgt30XwqErzzvGnFNFHq+dY02/Kup6iTlXz2MxqY+GJ8tIfTQ8YYvM67aY189ufQj3frqz1Nj83uo8/4i/9bOb7iyt39j8Ns/L7GKN+u7vmeq3tfd6aWP9kXiv26RP2qJP2qRP2qJP6qWdeZ8Zc+zY9vaHw8+9tTSmZG+fV+4ebs68R+4ebs4ArEO6r+bG8B5cm1uScxrk/+e5X3OvbSmA7cj9JrKWWLul///NEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIPkGztFETQ==
   </data>
  </layer>
  <layer name="Deco_col" width="100" height="100">

@@ -2,6 +2,7 @@ package states;
 
 import architecture.AbstractApplicationState;
 import architecture.AppStateEnum;
+import architecture.ApplicationOptions;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
@@ -98,7 +99,9 @@ public class GameState extends AbstractApplicationState {
 
     @Override
     public void initialize() {
-        getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/maps/lum01.tmx");
+
+        // ************* dbg
+        getAppContent().getOptions().set("prefix", "lum");
 
         gui = new Sprite(getGraphicEngine().getTexture("background.png"));
         gui.setPosition(0, 600 - 150);
@@ -110,16 +113,30 @@ public class GameState extends AbstractApplicationState {
         mTmpText.setCharacterSize(24);
         mTmpText.setStyle(1);
 
-        loadLevel();
+        levelReset();
+    }
+
+    public void levelFinish() {
+        mLevelId++;
+        levelReset();
+    }
+
+    private void levelReset() {
+        ApplicationOptions opts = getAppContent().getOptions();
+
+        String prefix = opts.get("prefix");
+        String name = "./assets/maps/" + prefix + mLevelId;
+
+        loadLevel(name + ".tmx", name + ".q", 2);
     }
 
     private static final int NUM_OBJS = 12;
 
-    private void loadLevel() {
+    private void loadLevel(String mapFilepath, String lvlQtFilepath, int totalLumingsRequested) {
         /*
          New Loading system : with loader class
          */
-        Loader ld = new Loader(getAppContent().getOptions().get("maps.filepath"), getGraphicEngine());
+        Loader ld = new Loader(mapFilepath, getGraphicEngine());
         myMap = ld.getMap();
 
         /*
@@ -148,7 +165,7 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new AnimateAlphaSystem());
         world.setSystem(new GateSystem(getAppContent()));
         world.setSystem(new GateReversedSystem());
-        world.setSystem(new CheckLevelEndSystem(this));
+        world.setSystem(new CheckLevelEndSystem(this, totalLumingsRequested));
 
         addFilters("filterRed", Masks.COLOR_RED);
         addFilters("filterGreen", Masks.COLOR_GREEN);
@@ -186,7 +203,7 @@ public class GameState extends AbstractApplicationState {
         mObjectQuantities = new int[NUM_OBJS];
 
         try {
-            Scanner scanner = new Scanner(new File("./assets/maps/lum" + mLevelId + ".q"));
+            Scanner scanner = new Scanner(new File(lvlQtFilepath));
             int i = 0;
             while (scanner.hasNextInt()) {
                 mObjectQuantities[i++] = scanner.nextInt();
@@ -204,7 +221,7 @@ public class GameState extends AbstractApplicationState {
                     getAppContent().exit();
                     break;
                 case R: // reset
-                    loadLevel();
+                    levelReset();
                     break;
                 case D: // toggle graphic debug
                     mDebugGraphics = !mDebugGraphics;
@@ -425,10 +442,6 @@ public class GameState extends AbstractApplicationState {
         }
     }
 
-    public void levelFinish() {
-        mLevelId++;
-        loadLevel();
-
-    }
+   
 
 }
