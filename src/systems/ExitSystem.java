@@ -14,6 +14,7 @@ import components.ExitCollected;
 import components.HitBox;
 import components.Transformation;
 import content.Groups;
+import states.GameState;
 import systems.helpers.CollisionHelper;
 
 /**
@@ -38,15 +39,17 @@ public class ExitSystem extends IntervalEntityProcessingSystem {
 
     private final AppContent mAppContent;
     private ImmutableBag<Entity> mLumings;
+    private final GameState mGame;
 
     @SuppressWarnings("unchecked")
-    public ExitSystem(AppContent application) {
+    public ExitSystem(AppContent application, GameState game) {
         super(Aspect.getAspectForAll(
                 Exit.class,
                 Transformation.class,
                 HitBox.class
         ), 0.1f);
         mAppContent = application;
+        mGame = game;
     }
 
     @Override
@@ -75,6 +78,7 @@ public class ExitSystem extends IntervalEntityProcessingSystem {
                         luming.changedInWorld();
 
                         e.addCollectedLuming(luming);
+                        mGame.addLumingCollected();
 
                         mAppContent.getMusicEngine().getSound("coin.wav").play();
                     }

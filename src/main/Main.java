@@ -31,7 +31,7 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        Application app = new Application("Lumings", args);
+        Application app = new Application("Lummings", args);
         app.setDisplayMode(800, 600, false);
 
         app.addState(new SplashScreenState());

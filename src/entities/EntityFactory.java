@@ -325,7 +325,7 @@ public class EntityFactory {
         exit.addComponent(animatedRect, ComponentType.getTypeFor(AnimatedTextureRect.class));
 
         exit.addComponent(new HitBox(new FloatRect(13, 13, 6, 6)));
-        exit.addComponent(new Exit(1, color));
+        exit.addComponent(new Exit(color));
 
         exit.addToWorld();
 

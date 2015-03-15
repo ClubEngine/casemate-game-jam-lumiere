@@ -16,37 +16,38 @@ public class CheckLevelEndSystem extends IntervalEntityProcessingSystem {
 
     @Mapper
     ComponentMapper<Exit> em;
-    private int totalExits;
-    private int totalOk;
+    private final int totalRequested;
+    private int totalLumingsCollected;
     private final GameState mGame;
 
     @SuppressWarnings("unchecked")
-    public CheckLevelEndSystem(GameState game) {
+    public CheckLevelEndSystem(GameState game, int totalLumsRequested) {
         super(Aspect.getAspectForAll(
                 Exit.class
         ), 1.f);
         mGame = game;
+        totalRequested = totalLumsRequested;
     }
 
     @Override
     protected void begin() {
-        totalExits = getActives().size();
-        totalOk = 0;
+        totalLumingsCollected = 0;
     }
 
     @Override
     protected void process(Entity entity) {
         Exit e = em.get(entity);
-        if (e.isOk()) {
-            totalOk++;
-        }
+        
+        totalLumingsCollected += e.getNumberLumingsCollected();
+        
     }
 
     @Override
     protected void end() {
-        if (totalExits == totalOk) {
+        if (totalRequested == totalLumingsCollected) {
             mGame.levelFinish();
         }
+        //System.out.println("lums collected = " + totalLumingsCollected);
     }
 
 

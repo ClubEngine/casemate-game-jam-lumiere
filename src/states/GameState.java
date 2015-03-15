@@ -2,6 +2,7 @@ package states;
 
 import architecture.AbstractApplicationState;
 import architecture.AppStateEnum;
+import architecture.ApplicationOptions;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
@@ -12,22 +13,32 @@ import components.Transformation;
 import content.Masks;
 import entities.EntityFactory;
 import graphics.Camera;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.Main;
 import map.Loader;
 import map.Map;
 import map.MapObject;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.ConstFont;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
+import org.jsfml.graphics.Text;
+import org.jsfml.system.Clock;
 import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
-import sounds.MusicEngine;
 import systems.AILumingSystem;
 import systems.AIMonsterSystem;
 import systems.AIPetSystem;
@@ -69,6 +80,15 @@ public class GameState extends AbstractApplicationState {
 
     private int mLevelId;
     private Sprite gui;
+    private int[] mObjectQuantities;
+    private Text mTmpText;
+    private int mLumingsCollected;
+    private int mRequestedLumings;
+    private Boolean mShowInterface;
+    private boolean mLevelFinished;
+    private Clock mClockLevelFinished;
+    private String mStringToDisplay = "";
+    private int mStringX;
 
     @Override
     public AppStateEnum getStateId() {
@@ -77,9 +97,7 @@ public class GameState extends AbstractApplicationState {
 
     @Override
     public void notifyEntering() {
-        MusicEngine mesMusiques = getAppContent().getMusicEngine();
-        gameMusic = mesMusiques.getMusic("happy.ogg");
-        //gameMusic.play();
+
     }
 
     @Override
@@ -89,19 +107,67 @@ public class GameState extends AbstractApplicationState {
 
     @Override
     public void initialize() {
-        getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/maps/lum01.tmx");
+
+        // ************* dbg
+        getAppContent().getOptions().set("prefix", "Level");
+        getAppContent().getOptions().set("interface", true);
 
         gui = new Sprite(getGraphicEngine().getTexture("background.png"));
         gui.setPosition(0, 600 - 150);
 
-        loadLevel();
+        ConstFont font = getGraphicEngine().getFont("dbg-font.otf");
+
+        mTmpText = new Text();
+        mTmpText.setFont(font);
+        mTmpText.setCharacterSize(24);
+        mTmpText.setStyle(1);
+
+        mShowInterface = getAppContent().getOptions().get("interface", true);
+
+        mClockLevelFinished = new Clock();
+
+        levelReset();
     }
 
-    private void loadLevel() {
+    public void levelFinish() {
+        if (!mLevelFinished) {
+            mLevelId++;
+            mLevelFinished = true;
+            mClockLevelFinished.restart();
+            System.out.println("Level finished");
+        }
+    }
+
+    private void levelReset() {
+        ApplicationOptions opts = getAppContent().getOptions();
+
+        String prefix = opts.get("prefix");
+        String name = "./assets/maps/" + prefix + mLevelId;
+
+        int totalReq = 0;
+        try {
+            Scanner scanner = new Scanner(new File(name + ".t"));
+            if (scanner.hasNextInt()) {
+                totalReq = scanner.nextInt();
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        mLevelFinished = false;
+        loadLevel(name + ".tmx", name + ".q", totalReq, name + ".txt");
+    }
+
+    private static final int NUM_OBJS = 12;
+
+    private void loadLevel(String mapFilepath,
+            String lvlQtFilepath,
+            int totalLumingsRequested,
+            String textPath) {
         /*
          New Loading system : with loader class
          */
-        Loader ld = new Loader(getAppContent().getOptions().get("maps.filepath"), getGraphicEngine());
+        Loader ld = new Loader(mapFilepath, getGraphicEngine());
         myMap = ld.getMap();
 
         /*
@@ -125,12 +191,12 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new MultipleAnimationSystem());
         world.setSystem(new DamageSystem());
         world.setSystem(new AILumingSystem(myMap));
-        world.setSystem(new ExitSystem(getAppContent()));
+        world.setSystem(new ExitSystem(getAppContent(), this));
         world.setSystem(new FilterSystem(getAppContent()));
         world.setSystem(new AnimateAlphaSystem());
         world.setSystem(new GateSystem(getAppContent()));
         world.setSystem(new GateReversedSystem());
-        world.setSystem(new CheckLevelEndSystem(this));
+        world.setSystem(new CheckLevelEndSystem(this, totalLumingsRequested));
 
         addFilters("filterRed", Masks.COLOR_RED);
         addFilters("filterGreen", Masks.COLOR_GREEN);
@@ -163,6 +229,36 @@ public class GameState extends AbstractApplicationState {
         addLumings("lumWhite", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
         world.initialize();
+
+        // Load quantities
+        mObjectQuantities = new int[NUM_OBJS];
+
+        try {
+            Scanner scanner = new Scanner(new File(lvlQtFilepath));
+            int i = 0;
+            while (scanner.hasNextInt()) {
+                mObjectQuantities[i++] = scanner.nextInt();
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // load txt
+        BufferedReader brTest;
+        mStringToDisplay = "";
+        mStringX = 800;
+        try {
+            brTest = new BufferedReader(new FileReader(textPath));
+            mStringToDisplay = brTest.readLine();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // set vars
+        mLumingsCollected = 0;
+        mRequestedLumings = totalLumingsRequested;
     }
 
     @Override
@@ -173,7 +269,8 @@ public class GameState extends AbstractApplicationState {
                     getAppContent().exit();
                     break;
                 case R: // reset
-                    loadLevel();
+                    //mLevelId = 0;
+                    levelReset();
                     break;
                 case D: // toggle graphic debug
                     mDebugGraphics = !mDebugGraphics;
@@ -195,7 +292,8 @@ public class GameState extends AbstractApplicationState {
             }
         } else if (e.type == Event.Type.MOUSE_MOVED) {
             mCursorPosition = e.asMouseEvent().position;
-        } else if (e.type == Event.Type.MOUSE_BUTTON_RELEASED) {
+        } else if (e.type == Event.Type.MOUSE_BUTTON_RELEASED
+                && mShowInterface) {
 
             if (new IntRect(0, 600 - 150, 800, 150).contains(mCursorPosition)) {
 
@@ -226,6 +324,12 @@ public class GameState extends AbstractApplicationState {
                     mCursorObj = 11;
                 } else if (new IntRect(434, 83, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 12;
+                }
+
+                if (mCursorObj != 0) {
+                    if (mObjectQuantities[mCursorObj - 1] == 0) {
+                        mCursorObj = 0;
+                    }
                 }
 
                 System.out.println("Obj = " + mCursorObj);
@@ -295,6 +399,7 @@ public class GameState extends AbstractApplicationState {
                 }
 
                 if (placed) {
+                    mObjectQuantities[mCursorObj - 1]--;
                     mCursorObj = 0;
                 }
             }
@@ -305,6 +410,12 @@ public class GameState extends AbstractApplicationState {
     public void update(Time time) {
         world.setDelta(time.asSeconds());
         world.process();
+
+        if (mLevelFinished && mClockLevelFinished.getElapsedTime().asSeconds() > 2) {
+            levelReset();
+        }
+
+        mStringX -= 100 * time.asSeconds();
     }
 
     @Override
@@ -325,9 +436,8 @@ public class GameState extends AbstractApplicationState {
             mDebugRenderingSystem.process();
         }
 
+        // ***
         getGraphicEngine().resetView();
-
-        
 
         if (mCursorObj != 0) {
             if (new IntRect(0, 0, 800, 600 - 150).contains(mCursorPosition)) {
@@ -344,6 +454,36 @@ public class GameState extends AbstractApplicationState {
         }
 
         target.draw(gui);
+
+        mTmpText.setColor(Color.WHITE);
+        if (mShowInterface) {
+            float x = 157;
+            float y = 600 - 150 + 40;
+            for (int i = 0; i < NUM_OBJS; ++i, x += 60) {
+
+                mTmpText.setString(Integer.toString(mObjectQuantities[i]));
+                mTmpText.setPosition(x, y);
+                target.draw(mTmpText);
+
+                if (i == 5) {
+                    x = 157 - 60;
+                    y = 600 - 150 + 96;
+                }
+            }
+        }
+
+        mTmpText.setPosition(690, 600 - 150 + 50);
+        mTmpText.setString("" + mLumingsCollected + " / " + mRequestedLumings);
+        if (mLumingsCollected == mRequestedLumings) {
+            mTmpText.setColor(Color.GREEN);
+        }
+        target.draw(mTmpText);
+
+        // text
+        mTmpText.setColor(Color.BLACK);
+        mTmpText.setString(mStringToDisplay);
+        mTmpText.setPosition(mStringX, 50);
+        target.draw(mTmpText);
 
     }
 
@@ -375,10 +515,8 @@ public class GameState extends AbstractApplicationState {
         }
     }
 
-    public void levelFinish() {
-        mLevelId++;
-        loadLevel();
-
+    public void addLumingCollected() {
+        mLumingsCollected++;
     }
 
 }
