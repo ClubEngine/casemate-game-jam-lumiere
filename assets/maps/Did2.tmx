@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="112">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="115">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="../textures/generic_platformer_tiles.png" width="1024" height="768"/>
  </tileset>
@@ -44,19 +44,22 @@
   </data>
  </layer>
  <objectgroup name="objs">
-  <object id="68" name="lumWhite" x="0" y="304" width="39" height="40"/>
-  <object id="77" name="filterCyan" x="320" y="304" width="32" height="32"/>
-  <object id="89" name="exitCyan" x="512" y="304" width="32" height="32"/>
-  <object id="99" name="lumWhite" x="0" y="256" width="39" height="40"/>
-  <object id="100" name="lumWhite" x="0" y="208" width="39" height="40"/>
-  <object id="101" name="lumWhite" x="0" y="144" width="39" height="40"/>
-  <object id="103" name="lumWhite" x="0" y="176" width="39" height="40"/>
-  <object id="104" name="lumWhite" x="0" y="224" width="39" height="40"/>
-  <object id="105" name="lumWhite" x="0" y="256" width="39" height="40"/>
-  <object id="106" name="lumWhite" x="0" y="176" width="39" height="40"/>
-  <object id="107" name="lumWhite" x="32" y="272" width="39" height="40"/>
-  <object id="108" name="lumWhite" x="32" y="240" width="39" height="40"/>
-  <object id="109" name="lumWhite" x="32" y="176" width="39" height="40"/>
-  <object id="110" name="lumWhite" x="32" y="208" width="39" height="40"/>
+  <object id="68" name="lumWhite" x="112" y="272" width="39" height="40"/>
+  <object id="77" name="filterRed" x="320" y="304" width="32" height="32"/>
+  <object id="89" name="gateBlue" x="512" y="304" width="32" height="32"/>
+  <object id="99" name="lumWhite" x="176" y="224" width="39" height="40"/>
+  <object id="100" name="lumWhite" x="80" y="240" width="39" height="40"/>
+  <object id="101" name="lumWhite" x="160" y="256" width="39" height="40"/>
+  <object id="103" name="lumWhite" x="96" y="208" width="39" height="40"/>
+  <object id="104" name="lumWhite" x="112" y="256" width="39" height="40"/>
+  <object id="105" name="lumWhite" x="80" y="224" width="39" height="40"/>
+  <object id="106" name="lumWhite" x="96" y="176" width="39" height="40"/>
+  <object id="107" name="lumWhite" x="128" y="224" width="39" height="40"/>
+  <object id="108" name="lumWhite" x="144" y="192" width="39" height="40"/>
+  <object id="109" name="lumWhite" x="160" y="160" width="39" height="40"/>
+  <object id="110" name="lumWhite" x="128" y="160" width="39" height="40"/>
+  <object id="112" name="exitRed" x="32" y="304" width="32" height="32"/>
+  <object id="113" name="lumBlue" x="416" y="192" width="39" height="40"/>
+  <object id="114" name="exitBlue" x="672" y="304" width="32" height="32"/>
  </objectgroup>
 </map>

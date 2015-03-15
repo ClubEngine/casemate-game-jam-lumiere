@@ -44,8 +44,7 @@
   </data>
  </layer>
  <objectgroup name="objs">
-  <object id="68" name="lumWhite" x="16" y="208" width="32" height="32"/>
+  <object id="68" name="lumWhite" x="32" y="240" width="32" height="32"/>
   <object id="89" name="exitWhite" x="496" y="304" width="32" height="32"/>
-  <object id="90" name="spawn" x="32" y="256" width="32" height="32"/>
  </objectgroup>
 </map>
