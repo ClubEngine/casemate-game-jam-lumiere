@@ -34,7 +34,7 @@ public class LoadingState extends AbstractApplicationState {
     @Override
     public void initialize() {
 
-        current = new Sprite(getGraphicEngine().getTexture("instructions.png"));
+        current = new Sprite(getGraphicEngine().getTexture("chargement.png"));
         mClock = new Clock();
     }
 
