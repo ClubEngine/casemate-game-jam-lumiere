@@ -32,8 +32,12 @@ public class Camera {
     public View getView(){
         return this.mView;
     }    
-    
+
+    public void setPosition(Vector2f position) {
+        mView.setCenter(position);
+        mTarget = position;
+    }
+
     private Vector2f mTarget;
     private final View mView;
-
 }

@@ -98,6 +98,8 @@ public class GameState extends AbstractApplicationState {
 
     @Override
     public void initialize() {
+        getGraphicEngine().getCamera().setPosition(new Vector2f(400, 300));
+
         gui = new Sprite(getGraphicEngine().getTexture("background.png"));
         gui.setPosition(0, 600 - 150);
 
