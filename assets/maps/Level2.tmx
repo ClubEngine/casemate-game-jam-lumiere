@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="93">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="102">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="../textures/generic_platformer_tiles.png" width="1024" height="768"/>
  </tileset>
@@ -46,5 +46,14 @@
  <objectgroup name="objs">
   <object id="68" name="lumWhite" x="288" y="208" width="32" height="32"/>
   <object id="89" name="exitGreen" x="64" y="304" width="32" height="32"/>
+  <object id="93" name="lumWhite" x="288" y="240" width="32" height="32"/>
+  <object id="94" name="lumWhite" x="336" y="224" width="32" height="32"/>
+  <object id="95" name="lumWhite" x="336" y="256" width="32" height="32"/>
+  <object id="96" name="lumWhite" x="400" y="224" width="32" height="32"/>
+  <object id="97" name="lumWhite" x="368" y="272" width="32" height="32"/>
+  <object id="98" name="lumWhite" x="416" y="272" width="32" height="32"/>
+  <object id="99" name="lumWhite" x="448" y="208" width="32" height="32"/>
+  <object id="100" name="lumWhite" x="320" y="304" width="32" height="32"/>
+  <object id="101" name="lumWhite" x="464" y="288" width="32" height="32"/>
  </objectgroup>
 </map>
