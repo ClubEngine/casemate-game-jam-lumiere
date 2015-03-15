@@ -39,6 +39,7 @@ import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
+import sounds.MusicEngine;
 import systems.AILumingSystem;
 import systems.AIMonsterSystem;
 import systems.AIPetSystem;
@@ -66,7 +67,6 @@ public class GameState extends AbstractApplicationState {
 
     private boolean mDebugGraphics = false;
 
-    private Music gameMusic;
     private Map myMap;
 
     private World world;
@@ -94,23 +94,9 @@ public class GameState extends AbstractApplicationState {
         return Main.MyStates.GAMESTATE;
     }
 
-    @Override
-    public void notifyEntering() {
-
-    }
-
-    @Override
-    public void notifyExiting() {
-        gameMusic.pause();
-    }
 
     @Override
     public void initialize() {
-
-        // ************* dbg
-        getAppContent().getOptions().set("prefix", "Level");
-        getAppContent().getOptions().set("interface", true);
-
         gui = new Sprite(getGraphicEngine().getTexture("background.png"));
         gui.setPosition(0, 600 - 150);
 
@@ -121,12 +107,27 @@ public class GameState extends AbstractApplicationState {
         mTmpText.setCharacterSize(24);
         mTmpText.setStyle(1);
 
-        mShowInterface = getAppContent().getOptions().get("interface", true);
-
         mClockLevelFinished = new Clock();
+    }
+
+    @Override
+    public void notifyEntering() {
+// ************* dbg
+        //getAppContent().getOptions().set("prefix", "Level");
+        //getAppContent().getOptions().set("interface", true);
+
+        mShowInterface = getAppContent().getOptions().get("interface", true);
 
         levelReset();
     }
+
+    @Override
+    public void notifyExiting() {
+        MusicEngine mesMusiques = getAppContent().getMusicEngine();
+        Music gameMusic = mesMusiques.getMusic("Digital_Native.ogg");
+        gameMusic.stop();
+    }
+
 
     public void levelFinish() {
         if (!mLevelFinished) {
@@ -151,6 +152,9 @@ public class GameState extends AbstractApplicationState {
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No more levels.");
+            getAppContent().goToState(Main.MyStates.GAME_OVER);
+            return;
         }
 
         mLevelFinished = false;
@@ -403,6 +407,7 @@ public class GameState extends AbstractApplicationState {
                 if (placed) {
                     mObjectQuantities[mCursorObj - 1]--;
                     mCursorObj = 0;
+                    getAppContent().getMusicEngine().getSound("plop.ogg").play();
                 }
             }
         }
@@ -449,7 +454,7 @@ public class GameState extends AbstractApplicationState {
                         ), 0));
 
                 RectangleShape rs = new RectangleShape(new Vector2f(32, 32));
-                rs.setFillColor(new Color(192, 192, 192, 128));
+                rs.setFillColor(new Color(192, 192, 192, 192));
                 rs.setPosition(pos);
                 getGraphicEngine().getRenderTarget().draw(rs);
             }

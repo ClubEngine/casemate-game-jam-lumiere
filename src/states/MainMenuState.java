@@ -5,6 +5,7 @@ import architecture.AbstractApplicationState;
 import architecture.AppStateEnum;
 import main.Main;
 import org.jsfml.audio.Music;
+import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
@@ -29,7 +30,7 @@ public class MainMenuState extends AbstractApplicationState {
     public void initialize() {
         
 
-        back = new Sprite(getGraphicEngine().getTexture("menu_back.png"));
+        back = new Sprite(getGraphicEngine().getTexture("Menu.png"));
     }
 
     @Override
@@ -54,14 +55,16 @@ public class MainMenuState extends AbstractApplicationState {
         } else if (event.type == Event.Type.MOUSE_MOVED) {
             mCursorPosition = event.asMouseEvent().position;
         } else if (event.type == Event.Type.MOUSE_BUTTON_RELEASED) {
-            if (new IntRect(0, 0, 100, 100).contains(mCursorPosition)) {
-                getAppContent().getOptions().set("prefix", "lum");
+            if (new IntRect(330, 320, 128, 50).contains(mCursorPosition)) { // play
+                getAppContent().getOptions().set("prefix", "Level");
                 getAppContent().getOptions().set("interface", true);
                 getAppContent().goToState(Main.MyStates.LOADING);
-            } else if (new IntRect(0, 0, 100, 100).contains(mCursorPosition)) {
+            } else if (new IntRect(270, 400, 256, 50).contains(mCursorPosition)) { // demo
                 getAppContent().getOptions().set("prefix", "demo");
                 getAppContent().getOptions().set("interface", false);
                 getAppContent().goToState(Main.MyStates.LOADING);
+            } else if (new IntRect(320, 500, 150, 50).contains(mCursorPosition)) { // exit
+                getAppContent().exit();
             }
         }
     }
@@ -74,6 +77,10 @@ public class MainMenuState extends AbstractApplicationState {
     @Override
     public void render() {
         final RenderTarget target = getGraphicEngine().getRenderTarget();
+
+        FloatRect a = back.getGlobalBounds();
+
+        back.setOrigin(a.width / 2, a.height / 2);
 
         target.draw(back);
     }
