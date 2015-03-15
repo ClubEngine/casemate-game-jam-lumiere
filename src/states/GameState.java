@@ -31,11 +31,11 @@ import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Text;
+import org.jsfml.system.Clock;
 import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
-import sounds.MusicEngine;
 import systems.AILumingSystem;
 import systems.AIMonsterSystem;
 import systems.AIPetSystem;
@@ -81,6 +81,9 @@ public class GameState extends AbstractApplicationState {
     private Text mTmpText;
     private int mLumingsCollected;
     private int mRequestedLumings;
+    private Boolean mShowInterface;
+    private boolean mLevelFinished;
+    private Clock mClockLevelFinished;
 
     @Override
     public AppStateEnum getStateId() {
@@ -89,9 +92,7 @@ public class GameState extends AbstractApplicationState {
 
     @Override
     public void notifyEntering() {
-        MusicEngine mesMusiques = getAppContent().getMusicEngine();
-        gameMusic = mesMusiques.getMusic("happy.ogg");
-        //gameMusic.play();
+
     }
 
     @Override
@@ -104,6 +105,7 @@ public class GameState extends AbstractApplicationState {
 
         // ************* dbg
         getAppContent().getOptions().set("prefix", "lum");
+        getAppContent().getOptions().set("interface", true);
 
         gui = new Sprite(getGraphicEngine().getTexture("background.png"));
         gui.setPosition(0, 600 - 150);
@@ -115,12 +117,20 @@ public class GameState extends AbstractApplicationState {
         mTmpText.setCharacterSize(24);
         mTmpText.setStyle(1);
 
+        mShowInterface = getAppContent().getOptions().get("interface", true);
+
+        mClockLevelFinished = new Clock();
+
         levelReset();
     }
 
     public void levelFinish() {
-        mLevelId++;
-        levelReset();
+        if (!mLevelFinished) {
+            mLevelId++;
+            mLevelFinished = true;
+            mClockLevelFinished.restart();
+            System.out.println("Level finished");
+        }
     }
 
     private void levelReset() {
@@ -129,7 +139,18 @@ public class GameState extends AbstractApplicationState {
         String prefix = opts.get("prefix");
         String name = "./assets/maps/" + prefix + mLevelId;
 
-        loadLevel(name + ".tmx", name + ".q", 2);
+        int totalReq = 0;
+        try {
+            Scanner scanner = new Scanner(new File(name + ".t"));
+            if (scanner.hasNextInt()) {
+                totalReq = scanner.nextInt();
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        mLevelFinished = false;
+        loadLevel(name + ".tmx", name + ".q", totalReq);
     }
 
     private static final int NUM_OBJS = 12;
@@ -227,6 +248,7 @@ public class GameState extends AbstractApplicationState {
                     getAppContent().exit();
                     break;
                 case R: // reset
+                    mLevelId = 0;
                     levelReset();
                     break;
                 case D: // toggle graphic debug
@@ -249,7 +271,8 @@ public class GameState extends AbstractApplicationState {
             }
         } else if (e.type == Event.Type.MOUSE_MOVED) {
             mCursorPosition = e.asMouseEvent().position;
-        } else if (e.type == Event.Type.MOUSE_BUTTON_RELEASED) {
+        } else if (e.type == Event.Type.MOUSE_BUTTON_RELEASED
+                && mShowInterface) {
 
             if (new IntRect(0, 600 - 150, 800, 150).contains(mCursorPosition)) {
 
@@ -366,6 +389,10 @@ public class GameState extends AbstractApplicationState {
     public void update(Time time) {
         world.setDelta(time.asSeconds());
         world.process();
+
+        if (mLevelFinished && mClockLevelFinished.getElapsedTime().asSeconds() > 2) {
+            levelReset();
+        }
     }
 
     @Override
@@ -404,22 +431,29 @@ public class GameState extends AbstractApplicationState {
         }
 
         target.draw(gui);
-        float x = 157;
-        float y = 600 - 150 + 40;
-        for (int i = 0; i < NUM_OBJS; ++i, x += 60) {
 
-            mTmpText.setString(Integer.toString(mObjectQuantities[i]));
-            mTmpText.setPosition(x, y);
-            target.draw(mTmpText);
+        mTmpText.setColor(Color.WHITE);
+        if (mShowInterface) {
+            float x = 157;
+            float y = 600 - 150 + 40;
+            for (int i = 0; i < NUM_OBJS; ++i, x += 60) {
 
-            if (i == 5) {
-                x = 157 - 60;
-                y = 600 - 150 + 96;
+                mTmpText.setString(Integer.toString(mObjectQuantities[i]));
+                mTmpText.setPosition(x, y);
+                target.draw(mTmpText);
+
+                if (i == 5) {
+                    x = 157 - 60;
+                    y = 600 - 150 + 96;
+                }
             }
         }
 
         mTmpText.setPosition(690, 600 - 150 + 50);
         mTmpText.setString("" + mLumingsCollected + " / " + mRequestedLumings);
+        if (mLumingsCollected == mRequestedLumings) {
+            mTmpText.setColor(Color.GREEN);
+        }
         target.draw(mTmpText);
     }
 
@@ -454,6 +488,5 @@ public class GameState extends AbstractApplicationState {
     public void addLumingCollected() {
         mLumingsCollected++;
     }
-
 
 }

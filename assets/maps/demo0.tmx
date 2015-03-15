@@ -5,7 +5,7 @@
  </tileset>
  <layer name="Ground" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+   eJzt1jEKwCAMBVAXvZne/0i1g4PgIhYR+x58MgUyJJAQAIC/iDVpoab9I18t15SFWvaPfLW257t7GWt7vruXMfdxFvdxnhj6f2k2fCuH/l+aDQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDrAUuFDBE=
   </data>
  </layer>
  <layer name="QuiTue" width="100" height="100">
@@ -44,9 +44,8 @@
   </data>
  </layer>
  <objectgroup name="objs">
-  <object id="67" name="exitBlue" x="256" y="144" width="32" height="32"/>
+  <object id="67" name="exitBlue" x="320" y="144" width="32" height="32"/>
   <object id="68" name="lumBlue" x="224" y="144" width="32" height="32"/>
-  <object id="70" name="lumMagenta" x="160" y="144" width="32" height="32"/>
-  <object id="83" name="filterBlue" x="192" y="144" width="32" height="32"/>
+  <object id="83" name="filterBlue" x="272" y="144" width="32" height="32"/>
  </objectgroup>
 </map>

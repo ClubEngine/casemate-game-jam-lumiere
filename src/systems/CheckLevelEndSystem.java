@@ -47,7 +47,7 @@ public class CheckLevelEndSystem extends IntervalEntityProcessingSystem {
         if (totalRequested == totalLumingsCollected) {
             mGame.levelFinish();
         }
-        System.out.println("lums collected = " + totalLumingsCollected);
+        //System.out.println("lums collected = " + totalLumingsCollected);
     }
 
 
