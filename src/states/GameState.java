@@ -22,6 +22,7 @@ import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderTarget;
+import org.jsfml.graphics.Sprite;
 import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
@@ -66,7 +67,8 @@ public class GameState extends AbstractApplicationState {
     private int mCursorState;
     private int mCursorObj;
 
-    private int levelId;
+    private int mLevelId;
+    private Sprite gui;
 
     @Override
     public AppStateEnum getStateId() {
@@ -89,6 +91,13 @@ public class GameState extends AbstractApplicationState {
     public void initialize() {
         getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/maps/lum01.tmx");
 
+        gui = new Sprite(getGraphicEngine().getTexture("background.png"));
+        gui.setPosition(0, 600 - 150);
+
+        loadLevel();
+    }
+
+    private void loadLevel() {
         /*
          New Loading system : with loader class
          */
@@ -160,7 +169,7 @@ public class GameState extends AbstractApplicationState {
                     getAppContent().exit();
                     break;
                 case R: // reset
-                    initialize();
+                    loadLevel();
                     break;
                 case D: // toggle graphic debug
                     mDebugGraphics = !mDebugGraphics;
@@ -185,29 +194,32 @@ public class GameState extends AbstractApplicationState {
         } else if (e.type == Event.Type.MOUSE_BUTTON_RELEASED) {
 
             if (new IntRect(0, 600 - 150, 800, 150).contains(mCursorPosition)) {
-                if (new IntRect(0, 600 - 64, 64, 64).contains(mCursorPosition)) {
+
+                Vector2i mCursorForGui = Vector2i.sub(mCursorPosition, new Vector2i(0, 600 - 150));
+
+                if (new IntRect(134, 28, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 1;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 2;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 3;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 4;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 5;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 6;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 7;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 8;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 9;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 10;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 10;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorPosition)) {
+                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
                     mCursorObj = 12;
                 }
             } else if (mCursorObj != 0) {
@@ -287,6 +299,8 @@ public class GameState extends AbstractApplicationState {
 
         getGraphicEngine().resetView();
 
+        target.draw(gui);
+
         if (mCursorObj != 0) {
             Vector2f pos = (myMap.getRealPosition(
                     myMap.getTilePosition(
@@ -323,7 +337,9 @@ public class GameState extends AbstractApplicationState {
     }
 
     public void levelFinish() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        mLevelId++;
+        loadLevel();
+        
     }
 
 }
