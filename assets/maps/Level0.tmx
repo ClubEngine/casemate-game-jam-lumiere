@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="93">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="102">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="../textures/generic_platformer_tiles.png" width="1024" height="768"/>
  </tileset>
@@ -47,9 +47,16 @@
   <object id="67" name="exitBlue" x="528" y="112" width="32" height="32"/>
   <object id="68" name="lumWhite" x="16" y="304" width="32" height="32"/>
   <object id="70" name="lumWhite" x="16" y="112" width="32" height="32"/>
-  <object id="71" name="spawn" x="16" y="64" width="32" height="32"/>
   <object id="89" name="exitBlue" x="512" y="304" width="32" height="32"/>
   <object id="91" name="gateRed" x="272" y="112" width="32" height="32"/>
   <object id="92" name="gateBlue" x="208" y="304" width="32" height="32"/>
+  <object id="93" name="lumWhite" x="16" y="64" width="32" height="32"/>
+  <object id="94" name="lumWhite" x="48" y="64" width="32" height="32"/>
+  <object id="95" name="lumWhite" x="32" y="96" width="32" height="32"/>
+  <object id="96" name="lumWhite" x="48" y="112" width="32" height="32"/>
+  <object id="97" name="lumWhite" x="16" y="272" width="32" height="32"/>
+  <object id="98" name="lumWhite" x="48" y="272" width="32" height="32"/>
+  <object id="100" name="lumWhite" x="32" y="288" width="32" height="32"/>
+  <object id="101" name="lumWhite" x="48" y="304" width="32" height="32"/>
  </objectgroup>
 </map>

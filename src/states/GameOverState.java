@@ -15,7 +15,7 @@ import org.jsfml.window.event.Event;
 /**
  *
  */
-public class LoadingState extends AbstractApplicationState {
+public class GameOverState extends AbstractApplicationState {
     private Sprite insts;
     private Clock mClock;
     private Sprite current;
@@ -23,18 +23,18 @@ public class LoadingState extends AbstractApplicationState {
     private Sprite casemate;
     private Sprite game;
 
-    public LoadingState() {
+    public GameOverState() {
     }
 
     @Override
     public AppStateEnum getStateId() {
-        return Main.MyStates.LOADING;
+        return Main.MyStates.GAME_OVER;
     }
 
     @Override
     public void initialize() {
 
-        current = new Sprite(getGraphicEngine().getTexture("instructions.png"));
+        current = new Sprite(getGraphicEngine().getTexture("game_over.png"));
         mClock = new Clock();
     }
 
@@ -49,14 +49,14 @@ public class LoadingState extends AbstractApplicationState {
     @Override
     public void handleEvent(Event event) {
         if (event.type == Event.Type.KEY_PRESSED) {
-            getAppContent().goToState(Main.MyStates.GAMESTATE);
+            getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
         }
     }
 
     @Override
     public void update(Time time) {
         if (mClock.getElapsedTime().asSeconds() > 1.5) {
-            getAppContent().goToState(Main.MyStates.GAMESTATE);
+            getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
         }
     }
 
@@ -64,8 +64,9 @@ public class LoadingState extends AbstractApplicationState {
     public void render() {
         
         final RenderTarget target = getGraphicEngine().getRenderTarget();
+        getGraphicEngine().resetView();
         target.clear(Color.BLACK);
-
+        
         FloatRect a = current.getGlobalBounds();
         
         current.setOrigin(a.width / 2, a.height / 2);

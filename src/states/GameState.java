@@ -39,6 +39,7 @@ import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.event.Event;
+import sounds.MusicEngine;
 import systems.AILumingSystem;
 import systems.AIMonsterSystem;
 import systems.AIPetSystem;
@@ -66,7 +67,6 @@ public class GameState extends AbstractApplicationState {
 
     private boolean mDebugGraphics = false;
 
-    private Music gameMusic;
     private Map myMap;
 
     private World world;
@@ -88,29 +88,16 @@ public class GameState extends AbstractApplicationState {
     private Clock mClockLevelFinished;
     private String mStringToDisplay = "";
     private int mStringX;
+    private Vector2f mCameraTarget = Vector2f.ZERO;
 
     @Override
     public AppStateEnum getStateId() {
         return Main.MyStates.GAMESTATE;
     }
 
-    @Override
-    public void notifyEntering() {
-
-    }
-
-    @Override
-    public void notifyExiting() {
-        gameMusic.pause();
-    }
 
     @Override
     public void initialize() {
-
-        // ************* dbg
-        getAppContent().getOptions().set("prefix", "Level");
-        getAppContent().getOptions().set("interface", true);
-
         gui = new Sprite(getGraphicEngine().getTexture("background.png"));
         gui.setPosition(0, 600 - 150);
 
@@ -121,12 +108,27 @@ public class GameState extends AbstractApplicationState {
         mTmpText.setCharacterSize(24);
         mTmpText.setStyle(1);
 
-        mShowInterface = getAppContent().getOptions().get("interface", true);
-
         mClockLevelFinished = new Clock();
+    }
+
+    @Override
+    public void notifyEntering() {
+// ************* dbg
+        //getAppContent().getOptions().set("prefix", "Level");
+        //getAppContent().getOptions().set("interface", true);
+
+        mShowInterface = getAppContent().getOptions().get("interface", true);
 
         levelReset();
     }
+
+    @Override
+    public void notifyExiting() {
+        MusicEngine mesMusiques = getAppContent().getMusicEngine();
+        Music gameMusic = mesMusiques.getMusic("Digital_Native.ogg");
+        gameMusic.stop();
+    }
+
 
     public void levelFinish() {
         if (!mLevelFinished) {
@@ -151,6 +153,13 @@ public class GameState extends AbstractApplicationState {
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No more levels.");
+            if (mShowInterface) {
+                getAppContent().goToState(Main.MyStates.GAME_OVER);
+            } else {
+                getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
+            }
+            return;
         }
 
         mLevelFinished = false;
@@ -168,6 +177,7 @@ public class GameState extends AbstractApplicationState {
          */
         Loader ld = new Loader(mapFilepath, getGraphicEngine());
         myMap = ld.getMap();
+
 
         /*
          World entities creation
@@ -261,6 +271,7 @@ public class GameState extends AbstractApplicationState {
         // set vars
         mLumingsCollected = 0;
         mRequestedLumings = totalLumingsRequested;
+        mCameraTarget = new Vector2f(400, 300);
     }
 
     @Override
@@ -278,7 +289,16 @@ public class GameState extends AbstractApplicationState {
                     mDebugGraphics = !mDebugGraphics;
                     break;
                 case UP:
-                    mPlayerControlSystem.goUp();
+                    mCameraTarget = Vector2f.add(mCameraTarget, new Vector2f(0, -10));
+                    break;
+                case DOWN:
+                    mCameraTarget = Vector2f.add(mCameraTarget, new Vector2f(0, 10));
+                    break;
+                case LEFT:
+                    mCameraTarget = Vector2f.add(mCameraTarget, new Vector2f(-10, 0));
+                    break;
+                case RIGHT:
+                    mCameraTarget = Vector2f.add(mCameraTarget, new Vector2f(10, 0));
                     break;
                 case SPACE:
                     break;
@@ -286,6 +306,8 @@ public class GameState extends AbstractApplicationState {
                     Vector2f pos = mEntityPlayer.getComponent(Transformation.class).getPosition();
                     Orientation or = mEntityPlayer.getComponent(Orientation.class);
                     EntityFactory.createFireBall(getAppContent(), world, pos, or);
+                    break;
+
             }
         } else if (e.type == Event.Type.KEY_RELEASED) {
             switch (e.asKeyEvent().key) {
@@ -396,13 +418,13 @@ public class GameState extends AbstractApplicationState {
                             EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_CYAN);
                             placed = true;
                             break;
-
                     }
                 }
 
                 if (placed) {
                     mObjectQuantities[mCursorObj - 1]--;
                     mCursorObj = 0;
+                    getAppContent().getMusicEngine().getSound("plop.ogg").play();
                 }
             }
         }
@@ -427,7 +449,7 @@ public class GameState extends AbstractApplicationState {
         target.clear(new Color(64, 64, 64));
 
         Camera cam = getGraphicEngine().getCamera();
-        cam.setTarget(new Vector2f(400, 300));
+        cam.setTarget(mCameraTarget);
 
         // Drawing map
         myMap.render(getGraphicEngine(), cam.getTopLeft(), (int) (cam.getView().getSize().x * 1.5), (int) (cam.getView().getSize().y * 1.5));
@@ -439,7 +461,7 @@ public class GameState extends AbstractApplicationState {
         }
 
         // ***
-        getGraphicEngine().resetView();
+        
 
         if (mCursorObj != 0) {
             if (new IntRect(0, 0, 800, 600 - 150).contains(mCursorPosition)) {
@@ -449,11 +471,13 @@ public class GameState extends AbstractApplicationState {
                         ), 0));
 
                 RectangleShape rs = new RectangleShape(new Vector2f(32, 32));
-                rs.setFillColor(new Color(192, 192, 192, 128));
+                rs.setFillColor(new Color(192, 192, 192, 192));
                 rs.setPosition(pos);
                 getGraphicEngine().getRenderTarget().draw(rs);
             }
         }
+
+        getGraphicEngine().resetView();
 
         target.draw(gui);
 

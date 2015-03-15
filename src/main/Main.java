@@ -7,6 +7,7 @@ package main;
 
 import architecture.AppStateEnum;
 import architecture.Application;
+import states.GameOverState;
 import states.GameState;
 import states.LoadingState;
 import states.MainMenuState;
@@ -22,7 +23,8 @@ public class Main {
         SPLASHSCREENSTATE,
         MAINMENUSTATE,
         LOADING,
-        GAMESTATE;
+        GAMESTATE,
+        GAME_OVER
 
     }
 
@@ -38,7 +40,8 @@ public class Main {
         app.addState(new MainMenuState());
         app.addState(new LoadingState());
         app.addState(new GameState());
-        app.setStartingState(MyStates.GAMESTATE);
+        app.addState(new GameOverState());
+        app.setStartingState(MyStates.MAINMENUSTATE);
 
         app.run();
     }
