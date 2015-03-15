@@ -15,54 +15,47 @@ import org.jsfml.window.event.Event;
 /**
  *
  */
-public class SplashScreenState extends AbstractApplicationState {
-    private Sprite sfml;
+public class LoadingState extends AbstractApplicationState {
+    private Sprite insts;
     private Clock mClock;
     private Sprite current;
     private int state;
     private Sprite casemate;
     private Sprite game;
 
-    public SplashScreenState() {
+    public LoadingState() {
     }
 
     @Override
     public AppStateEnum getStateId() {
-        return Main.MyStates.SPLASHSCREENSTATE;
+        return Main.MyStates.LOADING;
     }
 
     @Override
     public void initialize() {
 
-        sfml = new Sprite(getGraphicEngine().getTexture("sfml-logo-small.png"));
-        casemate = new Sprite(getGraphicEngine().getTexture("lacasemate-logo.png"));
-        game = new Sprite(getGraphicEngine().getTexture("lumings-logo.png"));
-        
-        current = sfml;
+        current = new Sprite(getGraphicEngine().getTexture("instructions.png"));
         mClock = new Clock();
-        state = 1;     
     }
+
+    @Override
+    public void notifyEntering() {
+        mClock.restart();
+    }
+
 
 
     @Override
     public void handleEvent(Event event) {
         if (event.type == Event.Type.KEY_PRESSED) {
-            getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
+            getAppContent().goToState(Main.MyStates.GAMESTATE);
         }
     }
 
     @Override
     public void update(Time time) {
-        if (state == 1 && mClock.getElapsedTime().asSeconds() > 1) {
-            state = 2;
-            mClock.restart();
-            current = casemate;
-        } else if (state == 2 && mClock.getElapsedTime().asSeconds() > 1) {
-            state = 3;
-            mClock.restart();
-            current = game;
-        } else if (state == 3 && mClock.getElapsedTime().asSeconds() > 1) {
-            getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
+        if (mClock.getElapsedTime().asSeconds() > 1.5) {
+            getAppContent().goToState(Main.MyStates.GAMESTATE);
         }
     }
 

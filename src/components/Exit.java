@@ -50,4 +50,8 @@ public class Exit extends Component {
         return mColor;
     }
 
+    public boolean isOk() {
+        return mNumberLemmingsCollected == mNumberLemmingsRequested;
+    }
+
 }
