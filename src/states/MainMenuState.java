@@ -57,7 +57,7 @@ public class MainMenuState extends AbstractApplicationState {
                 getAppContent().getOptions().set("interface", true);
                 getAppContent().goToState(Main.MyStates.LOADING);
             } else if (new IntRect(270, 400, 256, 50).contains(mCursorPosition)) { // demo
-                getAppContent().getOptions().set("prefix", "demo");
+                getAppContent().getOptions().set("prefix", "Did");
                 getAppContent().getOptions().set("interface", false);
                 getAppContent().goToState(Main.MyStates.LOADING);
             } else if (new IntRect(320, 500, 150, 50).contains(mCursorPosition)) { // exit

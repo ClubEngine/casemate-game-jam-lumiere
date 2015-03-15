@@ -33,7 +33,6 @@ public class GameOverState extends AbstractApplicationState {
 
     @Override
     public void initialize() {
-
         current = new Sprite(getGraphicEngine().getTexture("game_over.png"));
         mClock = new Clock();
     }
@@ -42,6 +41,7 @@ public class GameOverState extends AbstractApplicationState {
     public void notifyEntering() {
         mClock.restart();
         getGraphicEngine().resetView();
+        getAppContent().getMusicEngine().getSound("applause.ogg").play();
     }
 
 
@@ -55,7 +55,7 @@ public class GameOverState extends AbstractApplicationState {
 
     @Override
     public void update(Time time) {
-        if (mClock.getElapsedTime().asSeconds() > 1.5) {
+        if (mClock.getElapsedTime().asSeconds() > 2) {
             getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
         }
     }
