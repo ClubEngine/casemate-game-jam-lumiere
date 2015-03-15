@@ -19,10 +19,12 @@ import map.Map;
 import map.MapObject;
 import org.jsfml.audio.Music;
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.ConstFont;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
+import org.jsfml.graphics.Text;
 import org.jsfml.system.Time;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
@@ -69,6 +71,8 @@ public class GameState extends AbstractApplicationState {
 
     private int mLevelId;
     private Sprite gui;
+    private int[] mObjectQuantities;
+    private Text mTmpText;
 
     @Override
     public AppStateEnum getStateId() {
@@ -94,8 +98,17 @@ public class GameState extends AbstractApplicationState {
         gui = new Sprite(getGraphicEngine().getTexture("background.png"));
         gui.setPosition(0, 600 - 150);
 
+        ConstFont font = getGraphicEngine().getFont("dbg-font.otf");
+
+        mTmpText = new Text();
+        mTmpText.setFont(font);
+        mTmpText.setCharacterSize(24);
+        mTmpText.setStyle(1);
+
         loadLevel();
     }
+
+    private static final int NUM_OBJS = 12;
 
     private void loadLevel() {
         /*
@@ -163,6 +176,11 @@ public class GameState extends AbstractApplicationState {
         addLumings("lumWhite", Masks.COLOR_RED | Masks.COLOR_GREEN | Masks.COLOR_BLUE);
 
         world.initialize();
+
+        mObjectQuantities = new int[NUM_OBJS];
+        for (int i = 0; i < NUM_OBJS; ++i) {
+            mObjectQuantities[i] = 1;
+        }
     }
 
     @Override
@@ -226,6 +244,12 @@ public class GameState extends AbstractApplicationState {
                     mCursorObj = 11;
                 } else if (new IntRect(434, 83, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 12;
+                }
+
+                if (mCursorObj != 0) {
+                    if (mObjectQuantities[mCursorObj - 1] == 0) {
+                        mCursorObj = 0;
+                    }
                 }
 
                 System.out.println("Obj = " + mCursorObj);
@@ -295,6 +319,7 @@ public class GameState extends AbstractApplicationState {
                 }
 
                 if (placed) {
+                    mObjectQuantities[mCursorObj - 1]--;
                     mCursorObj = 0;
                 }
             }
@@ -325,6 +350,7 @@ public class GameState extends AbstractApplicationState {
             mDebugRenderingSystem.process();
         }
 
+        // ***
         getGraphicEngine().resetView();
 
         
@@ -344,6 +370,20 @@ public class GameState extends AbstractApplicationState {
         }
 
         target.draw(gui);
+        float x = 157;
+        float y = 600 - 150 + 40;
+        for (int i = 0; i < NUM_OBJS; ++i, x += 60) {
+
+            mTmpText.setString(Integer.toString(mObjectQuantities[i]));
+            mTmpText.setPosition(x, y);
+            target.draw(mTmpText);
+
+            if (i == 5) {
+                x = 157 - 60;
+                y = 600 - 150 + 96;
+            }
+
+        }
 
     }
 
