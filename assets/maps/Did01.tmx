@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="90">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="91">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
-  <image source="../textures/tiles.png" trans="ff00ff" width="1024" height="2016"/>
- </tileset>
- <tileset firstgid="8065" name="generic_platformer_tiles" tilewidth="16" tileheight="16">
   <image source="../textures/generic_platformer_tiles.png" width="1024" height="768"/>
  </tileset>
  <layer name="Ground" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt1EsKgDAMQMHqzez9D+UqkIW1xS+UGXj7EEhKAQAAgLal0/rfaFPp7TkKW6P63chTa+33qKym1uI+npL3OVIWdxFxX71Q/lH+1fvOfpa9AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjNkBZgwNvA==
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
   </data>
  </layer>
  <layer name="QuiTue" width="100" height="100">
@@ -18,12 +15,12 @@
  </layer>
  <layer name="Decoration" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <layer name="Collision" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJztzscNwgAQRNEtxQdcKMkE0wTJ1EVogA4YCVGAb1h6T/qHvaymCgAAAAAAAADgv8zbqkVaplVapy5t0jbt0j716ZDes6p7U/VIz/Rqxt/H/Dmlc7qkaxrSrf3uGdtvPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANPzAQRTKIQ=
+   eJzt1ztOAlEYBeAZEfCVsAEL366DFVjYWvjagEtA7SnslMKtsAIKWxfjnxgTmyk0JHP/m+9LTkFDzs1h4LIaNNU52Oy7wf9NEnfvcp34TBeJu3d5T3ymeeLuXTLvsUrcvUvmPSbDvhusX+Y9LircI/Pv+bzCPTI/Hyt7FKXG+1Xm7yv3q7K4X5XF/aos7ldlqfF+dZl4j1ni7l1eEp9pmbh7l4/EZ2or/L7K/PsxtUdRZrHHY+Qp8lzJNpn3WFaywW+Z92hHTbMRGUQ2I8PIKDKObEW2IzuR3che5CH2u2mb5jZyF7lv//76MN7nKHIcOYmcRs4i56PvPn/NT//X6PYWWST+jE1HfTdYv8/Ee8wq3GM/8ZmWibt3uUp8pnbcd4P1WyTeY1rhHp+J9/B8lMUeZbFHWexRFnuUxR5lsUdZ7FEWe5TF//Oy2AMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCXL15JL74=
   </data>
  </layer>
  <layer name="Deco_col" width="100" height="100">
@@ -47,13 +44,8 @@
   </data>
  </layer>
  <objectgroup name="objs">
-  <object id="67" name="exit_blue" x="976" y="144" width="32" height="32" visible="0"/>
   <object id="68" name="lumWhite" x="16" y="208" width="32" height="32"/>
-  <object id="70" name="lumRed" x="736" y="560" width="39" height="40" visible="0"/>
-  <object id="71" name="spawn" x="688" y="576" width="32" height="32" visible="0"/>
-  <object id="77" name="filterMagenta" x="624" y="576" width="32" height="32" rotation="-0.385148" visible="0"/>
-  <object id="84" name="ladder_bot_red" x="496" y="592" width="32" height="32" visible="0"/>
-  <object id="87" name="ladder_top_red" x="560" y="592" width="32" height="32" visible="0"/>
-  <object id="89" name="exit_white" x="512" y="304" width="32" height="32"/>
+  <object id="89" name="exitWhite" x="496" y="304" width="32" height="32"/>
+  <object id="90" name="spawn" x="32" y="256" width="32" height="32"/>
  </objectgroup>
 </map>
