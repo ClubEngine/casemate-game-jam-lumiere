@@ -203,75 +203,99 @@ public class GameState extends AbstractApplicationState {
 
                 if (new IntRect(134, 28, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 1;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(193, 27, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 2;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(253, 27, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 3;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(313, 27, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 4;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(373, 27, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 5;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(434, 27, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 6;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+
+                } else if (new IntRect(133, 83, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 7;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(193, 83, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 8;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(253, 83, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 9;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(313, 83, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 10;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
-                    mCursorObj = 10;
-                } else if (new IntRect(0, 0, 64, 64).contains(mCursorForGui)) {
+                } else if (new IntRect(373, 83, 40, 40).contains(mCursorForGui)) {
+                    mCursorObj = 11;
+                } else if (new IntRect(434, 83, 40, 40).contains(mCursorForGui)) {
                     mCursorObj = 12;
                 }
+
+                System.out.println("Obj = " + mCursorObj);
             } else if (mCursorObj != 0) {
 
-                Vector2f pos = (myMap.getRealPosition(
-                        myMap.getTilePosition(
-                                getGraphicEngine().getRealPoint(mCursorPosition), 1
-                        ), 1));
+                boolean placed = false;
 
-                switch (mCursorObj) {
-                    case 1:
-                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_RED);
-                        break;
-                    case 2:
-                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_GREEN);
-                        break;
-                    case 3:
-                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_BLUE);
-                        break;
-                    case 4:
-                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_YELLOW);
-                        break;
-                    case 5:
-                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_MAGENTA);
-                        break;
-                    case 6:
-                        EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_CYAN);
-                        break;
+                if (new IntRect(0, 0, 800, 600 - 150).contains(mCursorPosition)) {
 
-                    case 7:
-                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_RED);
-                        break;
-                    case 8:
-                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_GREEN);
-                        break;
-                    case 9:
-                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_BLUE);
-                        break;
-                    case 10:
-                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_YELLOW);
-                        break;
-                    case 11:
-                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_MAGENTA);
-                        break;
-                    case 12:
-                        EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_CYAN);
-                        break;
+                    Vector2f pos = (myMap.getRealPosition(
+                            myMap.getTilePosition(
+                                    getGraphicEngine().getRealPoint(mCursorPosition), 0
+                            ), 0));
 
+                    switch (mCursorObj) {
+                        case 1:
+                            EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_RED);
+                            placed = true;
+                            break;
+                        case 2:
+                            EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_GREEN);
+                            placed = true;
+                            break;
+                        case 3:
+                            EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_BLUE);
+                            placed = true;
+                            break;
+                        case 4:
+                            EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_YELLOW);
+                            placed = true;
+                            break;
+                        case 5:
+                            EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_MAGENTA);
+                            placed = true;
+                            break;
+                        case 6:
+                            EntityFactory.createFilter(getAppContent(), world, pos, Masks.COLOR_CYAN);
+                            placed = true;
+                            break;
+
+                        case 7:
+                            EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_RED);
+                            placed = true;
+                            break;
+                        case 8:
+                            EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_GREEN);
+                            placed = true;
+                            break;
+                        case 9:
+                            EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_BLUE);
+                            placed = true;
+                            break;
+                        case 10:
+                            EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_YELLOW);
+                            placed = true;
+                            break;
+                        case 11:
+                            EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_MAGENTA);
+                            placed = true;
+                            break;
+                        case 12:
+                            EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_CYAN);
+                            placed = true;
+                            break;
+
+                    }
+                }
+
+                if (placed) {
+                    mCursorObj = 0;
                 }
             }
         }
@@ -303,19 +327,23 @@ public class GameState extends AbstractApplicationState {
 
         getGraphicEngine().resetView();
 
-        target.draw(gui);
+        
 
         if (mCursorObj != 0) {
-            Vector2f pos = (myMap.getRealPosition(
-                    myMap.getTilePosition(
-                            getGraphicEngine().getRealPoint(mCursorPosition), 1
-                    ), 1));
+            if (new IntRect(0, 0, 800, 600 - 150).contains(mCursorPosition)) {
+                Vector2f pos = (myMap.getRealPosition(
+                        myMap.getTilePosition(
+                                getGraphicEngine().getRealPoint(mCursorPosition), 0
+                        ), 0));
 
-            RectangleShape rs = new RectangleShape(new Vector2f(32, 32));
-            rs.setFillColor(new Color(192, 192, 192, 128));
-            rs.setPosition(pos);
-            getGraphicEngine().getRenderTarget().draw(rs);
+                RectangleShape rs = new RectangleShape(new Vector2f(32, 32));
+                rs.setFillColor(new Color(192, 192, 192, 128));
+                rs.setPosition(pos);
+                getGraphicEngine().getRenderTarget().draw(rs);
+            }
         }
+
+        target.draw(gui);
 
     }
 
@@ -347,11 +375,10 @@ public class GameState extends AbstractApplicationState {
         }
     }
 
-
     public void levelFinish() {
         mLevelId++;
         loadLevel();
-        
+
     }
 
 }
