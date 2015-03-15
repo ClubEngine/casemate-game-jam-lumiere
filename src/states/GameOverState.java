@@ -41,6 +41,7 @@ public class GameOverState extends AbstractApplicationState {
     @Override
     public void notifyEntering() {
         mClock.restart();
+        getGraphicEngine().resetView();
     }
 
 

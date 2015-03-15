@@ -41,6 +41,7 @@ public class LoadingState extends AbstractApplicationState {
     @Override
     public void notifyEntering() {
         mClock.restart();
+        getGraphicEngine().resetView();
     }
 
 

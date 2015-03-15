@@ -28,8 +28,6 @@ public class MainMenuState extends AbstractApplicationState {
 
     @Override
     public void initialize() {
-        
-
         back = new Sprite(getGraphicEngine().getTexture("Menu.png"));
     }
 
@@ -38,9 +36,8 @@ public class MainMenuState extends AbstractApplicationState {
         MusicEngine mesMusiques = getAppContent().getMusicEngine();
         Music gameMusic = mesMusiques.getMusic("Digital_Native.ogg");
         gameMusic.play();
+        getGraphicEngine().resetView();
     }
-
-
 
     @Override
     public void handleEvent(Event event) {
@@ -78,10 +75,10 @@ public class MainMenuState extends AbstractApplicationState {
     public void render() {
         final RenderTarget target = getGraphicEngine().getRenderTarget();
 
-        FloatRect a = back.getGlobalBounds();
+        getGraphicEngine().resetView();
+        FloatRect a = back.getLocalBounds();
 
-        back.setOrigin(a.width / 2, a.height / 2);
-
+        back.setPosition(0, 0);
         target.draw(back);
     }
 

@@ -400,7 +400,6 @@ public class GameState extends AbstractApplicationState {
                             EntityFactory.createGate(getAppContent(), world, pos, Masks.COLOR_CYAN);
                             placed = true;
                             break;
-
                     }
                 }
 
