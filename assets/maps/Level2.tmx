@@ -44,16 +44,16 @@
   </data>
  </layer>
  <objectgroup name="objs">
-  <object id="68" name="lumWhite" x="288" y="208" width="32" height="32"/>
+  <object id="68" name="lumWhite" x="112" y="224" width="32" height="32"/>
   <object id="89" name="exitGreen" x="64" y="304" width="32" height="32"/>
-  <object id="93" name="lumWhite" x="288" y="240" width="32" height="32"/>
-  <object id="94" name="lumWhite" x="336" y="224" width="32" height="32"/>
-  <object id="95" name="lumWhite" x="336" y="256" width="32" height="32"/>
-  <object id="96" name="lumWhite" x="400" y="224" width="32" height="32"/>
-  <object id="97" name="lumWhite" x="368" y="272" width="32" height="32"/>
-  <object id="98" name="lumWhite" x="416" y="272" width="32" height="32"/>
-  <object id="99" name="lumWhite" x="448" y="208" width="32" height="32"/>
-  <object id="100" name="lumWhite" x="320" y="304" width="32" height="32"/>
-  <object id="101" name="lumWhite" x="464" y="288" width="32" height="32"/>
+  <object id="93" name="lumWhite" x="224" y="224" width="32" height="32"/>
+  <object id="94" name="lumWhite" x="112" y="272" width="32" height="32"/>
+  <object id="95" name="lumWhite" x="192" y="192" width="32" height="32"/>
+  <object id="96" name="lumWhite" x="144" y="208" width="32" height="32"/>
+  <object id="97" name="lumWhite" x="160" y="272" width="32" height="32"/>
+  <object id="98" name="lumWhite" x="160" y="304" width="32" height="32"/>
+  <object id="99" name="lumWhite" x="208" y="256" width="32" height="32"/>
+  <object id="100" name="lumWhite" x="208" y="304" width="32" height="32"/>
+  <object id="101" name="lumWhite" x="240" y="304" width="32" height="32"/>
  </objectgroup>
 </map>
