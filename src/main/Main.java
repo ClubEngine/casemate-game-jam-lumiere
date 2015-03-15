@@ -8,6 +8,7 @@ package main;
 import architecture.AppStateEnum;
 import architecture.Application;
 import states.GameState;
+import states.LoadingState;
 import states.MainMenuState;
 import states.SplashScreenState;
 
@@ -20,6 +21,7 @@ public class Main {
 
         SPLASHSCREENSTATE,
         MAINMENUSTATE,
+        LOADING,
         GAMESTATE;
 
     }
@@ -34,6 +36,7 @@ public class Main {
 
         app.addState(new SplashScreenState());
         app.addState(new MainMenuState());
+        app.addState(new LoadingState());
         app.addState(new GameState());
         app.setStartingState(MyStates.GAMESTATE);
 
