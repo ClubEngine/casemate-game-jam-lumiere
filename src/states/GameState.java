@@ -87,7 +87,7 @@ public class GameState extends AbstractApplicationState {
 
     @Override
     public void initialize() {
-        //getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/maps/lum01.tmx");
+        getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/maps/lum01.tmx");
 
         /*
          New Loading system : with loader class

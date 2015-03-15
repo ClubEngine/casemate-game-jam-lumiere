@@ -28,7 +28,7 @@ public class LoadingState extends AbstractApplicationState {
 
     @Override
     public AppStateEnum getStateId() {
-        return Main.MyStates.SPLASHSCREENSTATE;
+        return Main.MyStates.LOADING;
     }
 
     @Override
@@ -38,17 +38,23 @@ public class LoadingState extends AbstractApplicationState {
         mClock = new Clock();
     }
 
+    @Override
+    public void notifyEntering() {
+        mClock.restart();
+    }
+
+
 
     @Override
     public void handleEvent(Event event) {
         if (event.type == Event.Type.KEY_PRESSED) {
-            getAppContent().goToState(Main.MyStates.MAINMENUSTATE);
+            getAppContent().goToState(Main.MyStates.GAMESTATE);
         }
     }
 
     @Override
     public void update(Time time) {
-        if (mClock.getElapsedTime().asSeconds() > 2) {
+        if (mClock.getElapsedTime().asSeconds() > 1.5) {
             getAppContent().goToState(Main.MyStates.GAMESTATE);
         }
     }
