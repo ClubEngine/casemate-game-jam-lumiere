@@ -64,7 +64,7 @@ import systems.RenderSpriteSystem;
  */
 public class GameState extends AbstractApplicationState {
 
-    private boolean mDebugGraphics = true;
+    private boolean mDebugGraphics = false;
 
     private Music gameMusic;
     private Map myMap;
@@ -75,7 +75,6 @@ public class GameState extends AbstractApplicationState {
     private DebugRenderingSystem mDebugRenderingSystem;
     private Entity mEntityPlayer;
     private Vector2i mCursorPosition = Vector2i.ZERO;
-    private int mCursorState;
     private int mCursorObj;
 
     private int mLevelId;
@@ -477,7 +476,7 @@ public class GameState extends AbstractApplicationState {
 
         mTmpText.setPosition(690, 600 - 150 + 50);
         mTmpText.setString("" + mLumingsCollected + " / " + mRequestedLumings);
-        if (mLumingsCollected == mRequestedLumings) {
+        if (mLumingsCollected >= mRequestedLumings) {
             mTmpText.setColor(Color.GREEN);
         }
         target.draw(mTmpText);
