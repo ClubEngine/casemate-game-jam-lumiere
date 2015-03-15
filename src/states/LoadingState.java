@@ -42,6 +42,9 @@ public class LoadingState extends AbstractApplicationState {
     public void notifyEntering() {
         mClock.restart();
         getGraphicEngine().resetView();
+
+        // ***
+        getAppContent().goToState(Main.MyStates.GAMESTATE);
     }
 
 

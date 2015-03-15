@@ -36,7 +36,7 @@ public class SplashScreenState extends AbstractApplicationState {
 
         sfml = new Sprite(getGraphicEngine().getTexture("sfml-logo-small.png"));
         casemate = new Sprite(getGraphicEngine().getTexture("lacasemate-logo.png"));
-        game = new Sprite(getGraphicEngine().getTexture("lumings-logo.png"));
+        game = new Sprite(getGraphicEngine().getTexture("logo.png"));
         
         current = sfml;
         mClock = new Clock();
