@@ -47,6 +47,5 @@
   <object id="68" name="lumWhite" x="0" y="304" width="39" height="40"/>
   <object id="77" name="filterBlue" x="320" y="304" width="32" height="32"/>
   <object id="89" name="exitBlue" x="512" y="304" width="32" height="32"/>
-  <object id="98" name="spawn" x="48" y="304" width="39" height="40"/>
  </objectgroup>
 </map>
