@@ -13,8 +13,11 @@ import components.Transformation;
 import content.Masks;
 import entities.EntityFactory;
 import graphics.Camera;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -84,6 +87,8 @@ public class GameState extends AbstractApplicationState {
     private Boolean mShowInterface;
     private boolean mLevelFinished;
     private Clock mClockLevelFinished;
+    private String mStringToDisplay = "";
+    private int mStringX;
 
     @Override
     public AppStateEnum getStateId() {
@@ -104,7 +109,7 @@ public class GameState extends AbstractApplicationState {
     public void initialize() {
 
         // ************* dbg
-        getAppContent().getOptions().set("prefix", "lum");
+        getAppContent().getOptions().set("prefix", "Level");
         getAppContent().getOptions().set("interface", true);
 
         gui = new Sprite(getGraphicEngine().getTexture("background.png"));
@@ -150,12 +155,15 @@ public class GameState extends AbstractApplicationState {
         }
 
         mLevelFinished = false;
-        loadLevel(name + ".tmx", name + ".q", totalReq);
+        loadLevel(name + ".tmx", name + ".q", totalReq, name + ".txt");
     }
 
     private static final int NUM_OBJS = 12;
 
-    private void loadLevel(String mapFilepath, String lvlQtFilepath, int totalLumingsRequested) {
+    private void loadLevel(String mapFilepath,
+            String lvlQtFilepath,
+            int totalLumingsRequested,
+            String textPath) {
         /*
          New Loading system : with loader class
          */
@@ -235,6 +243,19 @@ public class GameState extends AbstractApplicationState {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        // load txt
+        BufferedReader brTest;
+        mStringToDisplay = "";
+        mStringX = 800;
+        try {
+            brTest = new BufferedReader(new FileReader(textPath));
+            mStringToDisplay = brTest.readLine();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         // set vars
         mLumingsCollected = 0;
         mRequestedLumings = totalLumingsRequested;
@@ -248,7 +269,7 @@ public class GameState extends AbstractApplicationState {
                     getAppContent().exit();
                     break;
                 case R: // reset
-                    mLevelId = 0;
+                    //mLevelId = 0;
                     levelReset();
                     break;
                 case D: // toggle graphic debug
@@ -393,6 +414,8 @@ public class GameState extends AbstractApplicationState {
         if (mLevelFinished && mClockLevelFinished.getElapsedTime().asSeconds() > 2) {
             levelReset();
         }
+
+        mStringX -= 100 * time.asSeconds();
     }
 
     @Override
@@ -455,6 +478,13 @@ public class GameState extends AbstractApplicationState {
             mTmpText.setColor(Color.GREEN);
         }
         target.draw(mTmpText);
+
+        // text
+        mTmpText.setColor(Color.BLACK);
+        mTmpText.setString(mStringToDisplay);
+        mTmpText.setPosition(mStringX, 50);
+        target.draw(mTmpText);
+
     }
 
     private void addFilters(String filterName, int color) {
