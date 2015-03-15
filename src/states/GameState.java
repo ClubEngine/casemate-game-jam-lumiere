@@ -153,7 +153,7 @@ public class GameState extends AbstractApplicationState {
                 totalReq = scanner.nextInt();
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameState.class.getName()).log(Level.INFO, null, ex);
             System.out.println("No more levels.");
             if (mShowInterface) {
                 getAppContent().goToState(Main.MyStates.GAME_OVER);
