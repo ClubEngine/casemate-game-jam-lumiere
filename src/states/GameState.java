@@ -79,6 +79,8 @@ public class GameState extends AbstractApplicationState {
     private Sprite gui;
     private int[] mObjectQuantities;
     private Text mTmpText;
+    private int mLumingsCollected;
+    private int mRequestedLumings;
 
     @Override
     public AppStateEnum getStateId() {
@@ -160,7 +162,7 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new MultipleAnimationSystem());
         world.setSystem(new DamageSystem());
         world.setSystem(new AILumingSystem(myMap));
-        world.setSystem(new ExitSystem(getAppContent()));
+        world.setSystem(new ExitSystem(getAppContent(), this));
         world.setSystem(new FilterSystem(getAppContent()));
         world.setSystem(new AnimateAlphaSystem());
         world.setSystem(new GateSystem(getAppContent()));
@@ -211,6 +213,10 @@ public class GameState extends AbstractApplicationState {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        // set vars
+        mLumingsCollected = 0;
+        mRequestedLumings = totalLumingsRequested;
     }
 
     @Override
@@ -412,6 +418,9 @@ public class GameState extends AbstractApplicationState {
             }
         }
 
+        mTmpText.setPosition(690, 600 - 150 + 50);
+        mTmpText.setString("" + mLumingsCollected + " / " + mRequestedLumings);
+        target.draw(mTmpText);
     }
 
     private void addFilters(String filterName, int color) {
@@ -442,6 +451,9 @@ public class GameState extends AbstractApplicationState {
         }
     }
 
-   
+    public void addLumingCollected() {
+        mLumingsCollected++;
+    }
+
 
 }
