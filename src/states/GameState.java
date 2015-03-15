@@ -12,7 +12,12 @@ import components.Transformation;
 import content.Masks;
 import entities.EntityFactory;
 import graphics.Camera;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.Main;
 import map.Loader;
 import map.Map;
@@ -177,9 +182,17 @@ public class GameState extends AbstractApplicationState {
 
         world.initialize();
 
+        // Load quantities
         mObjectQuantities = new int[NUM_OBJS];
-        for (int i = 0; i < NUM_OBJS; ++i) {
-            mObjectQuantities[i] = 1;
+
+        try {
+            Scanner scanner = new Scanner(new File("./assets/maps/lum" + mLevelId + ".q"));
+            int i = 0;
+            while (scanner.hasNextInt()) {
+                mObjectQuantities[i++] = scanner.nextInt();
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -353,8 +366,6 @@ public class GameState extends AbstractApplicationState {
         // ***
         getGraphicEngine().resetView();
 
-        
-
         if (mCursorObj != 0) {
             if (new IntRect(0, 0, 800, 600 - 150).contains(mCursorPosition)) {
                 Vector2f pos = (myMap.getRealPosition(
@@ -382,7 +393,6 @@ public class GameState extends AbstractApplicationState {
                 x = 157 - 60;
                 y = 600 - 150 + 96;
             }
-
         }
 
     }
