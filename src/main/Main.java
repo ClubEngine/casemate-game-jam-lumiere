@@ -35,7 +35,7 @@ public class Main {
         app.addState(new SplashScreenState());
         app.addState(new MainMenuState());
         app.addState(new GameState());
-        app.setStartingState(MyStates.GAMESTATE);
+        app.setStartingState(MyStates.SPLASHSCREENSTATE);
 
         app.run();
     }

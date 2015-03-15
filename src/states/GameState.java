@@ -32,6 +32,7 @@ import systems.AIMonsterSystem;
 import systems.AIPetSystem;
 import systems.AnimateAlphaSystem;
 import systems.AnimateTextRectSystem;
+import systems.CheckLevelEndSystem;
 import systems.CollectSystem;
 import systems.DamageSystem;
 import systems.DebugRenderingSystem;
@@ -65,6 +66,8 @@ public class GameState extends AbstractApplicationState {
     private int mCursorState;
     private int mCursorObj;
 
+    private int levelId;
+
     @Override
     public AppStateEnum getStateId() {
         return Main.MyStates.GAMESTATE;
@@ -84,7 +87,7 @@ public class GameState extends AbstractApplicationState {
 
     @Override
     public void initialize() {
-        getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/maps/lum01.tmx");
+        //getAppContent().getOptions().setIfUnset("maps.filepath", "./assets/maps/lum01.tmx");
 
         /*
          New Loading system : with loader class
@@ -118,6 +121,7 @@ public class GameState extends AbstractApplicationState {
         world.setSystem(new AnimateAlphaSystem());
         world.setSystem(new GateSystem(getAppContent()));
         world.setSystem(new GateReversedSystem());
+        world.setSystem(new CheckLevelEndSystem(this));
 
         addFilters("filterRed", Masks.COLOR_RED);
         addFilters("filterGreen", Masks.COLOR_GREEN);
@@ -316,6 +320,10 @@ public class GameState extends AbstractApplicationState {
         for (MapObject exit : exits) {
             EntityFactory.createExit(getAppContent(), world, exit.getPosition(), color);
         }
+    }
+
+    public void levelFinish() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
