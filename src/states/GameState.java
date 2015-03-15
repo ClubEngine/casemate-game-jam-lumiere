@@ -250,6 +250,9 @@ public class GameState extends AbstractApplicationState {
         try {
             brTest = new BufferedReader(new FileReader(textPath));
             mStringToDisplay = brTest.readLine();
+            if (mStringToDisplay == null) {
+                mStringToDisplay = "";
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
