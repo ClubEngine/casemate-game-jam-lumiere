@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="CasemateLumiere" default="default" basedir=".">
-    <description>Builds, tests, and runs the project JungleEngine.</description>
+<project name="Lummings" default="default" basedir=".">
+    <description>Help the lummings to join home by changing color hair.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 

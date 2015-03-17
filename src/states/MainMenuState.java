@@ -5,6 +5,7 @@ import architecture.AbstractApplicationState;
 import architecture.AppStateEnum;
 import main.Main;
 import org.jsfml.audio.Music;
+import org.jsfml.audio.SoundSource;
 import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderTarget;
@@ -35,7 +36,10 @@ public class MainMenuState extends AbstractApplicationState {
     public void notifyEntering() {
         MusicEngine mesMusiques = getAppContent().getMusicEngine();
         Music gameMusic = mesMusiques.getMusic("Digital_Native.ogg");
-        gameMusic.play();
+        gameMusic.setLoop(true);
+        if (gameMusic.getStatus() != SoundSource.Status.PLAYING) {
+            gameMusic.play();
+        }
         getGraphicEngine().resetView();
     }
 
