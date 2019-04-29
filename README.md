@@ -5,6 +5,8 @@ Game created for a GameJam
 
 Help the Lummings to escape from the levels !
 
+![Preview image](https://raw.githubusercontent.com/ClubEngine/casemate-game-jam-lumiere/master/lummings-web.png)
+
 # To play
 
 Need java 1.8. And run with :
